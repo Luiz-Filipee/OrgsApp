@@ -2,26 +2,30 @@ package br.luizfilipe.orgs.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import br.luizfilipe.orgs.R
+import br.luizfilipe.orgs.databinding.ProdutoItemBinding
+import br.luizfilipe.orgs.ui.extensions.tentaCarregarImagem
 import br.luizfilipe.orgs.ui.model.Produto
+import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.Collections
+import java.util.Locale
 
 class ListaProdutosAdapter(
-    private val produtos: List<Produto>,
-    private val context: Context
+    produtos: List<Produto>,
+    private val context: Context,
+    var quandoClicaNoItem: (produto: Produto) -> Unit = {}
 ) : RecyclerView.Adapter<ListaProdutosAdapter.ProdutoViewHolder>() {
+
+    private val produtos = produtos.toMutableList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ListaProdutosAdapter.ProdutoViewHolder {
-        val viewCriada: View =
-            LayoutInflater.from(context).inflate(R.layout.produto_item, parent, false)
-        return ProdutoViewHolder(viewCriada)
+        val binding = ProdutoItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        return ProdutoViewHolder(binding)
     }
 
     override fun getItemCount(): Int = produtos.size
@@ -31,14 +35,59 @@ class ListaProdutosAdapter(
         holder.vincula(produto)
     }
 
-    class ProdutoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    fun atualiza(produtos: List<Produto>) {
+        this.produtos.clear()
+        this.produtos.addAll(produtos)
+        notifyDataSetChanged()
+    }
+
+    fun troca(positionInitial: Int, positionFinal: Int) {
+        Collections.swap(produtos, positionInitial, positionFinal)
+        notifyItemMoved(positionInitial, positionFinal)
+    }
+
+    fun remove(position: Int) {
+        produtos.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+
+  inner  class ProdutoViewHolder(private val binding: ProdutoItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        private lateinit var produto: Produto
+
+        init {
+            itemView.setOnClickListener{
+                if(::produto.isInitialized){
+                    quandoClicaNoItem(produto)
+                }
+            }
+        }
+
         fun vincula(produto: Produto) {
-            val nome = itemView.findViewById<TextView>(R.id.produto_item_titulo)
+            val nome = binding.produtoItemTitulo
             nome.text = produto.nome
-            val descricao = itemView.findViewById<TextView>(R.id.produto_item_descricao)
+            val descricao = binding.produtoItemDescricao
             descricao.text = produto.descricao
-            val valor = itemView.findViewById<TextView>(R.id.produto_item_valor)
-            valor.text = produto.valor.toPlainString()
+            val valor = binding.produtoItemValor
+            val valorMoeda: String = formataParaMoedaBrasileira(produto.valor)
+            valor.text = valorMoeda
+
+            /*val visibilidade = if(produto.imagem != null){
+                View.VISIBLE
+            }else{
+                View.GONE
+            }
+
+            binding.produtoItemImagem.visibility = visibilidade*/
+
+            binding.produtoItemImagem.tentaCarregarImagem(produto.imagem)
+        }
+
+        private fun formataParaMoedaBrasileira(valor: BigDecimal): String {
+            val formatador = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
+            return formatador.format(valor)
         }
 
     }

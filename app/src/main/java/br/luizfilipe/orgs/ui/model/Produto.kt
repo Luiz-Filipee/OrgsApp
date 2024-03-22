@@ -1,9 +1,13 @@
 package br.luizfilipe.orgs.ui.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
-class Produto(
-    val nome: String,
-    val descricao: String,
-    val valor: BigDecimal
-)
+@Parcelize
+data class Produto(
+    var nome: String,
+    var descricao: String,
+    var valor: BigDecimal,
+    var imagem: String? = null,
+): Parcelable

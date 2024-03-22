@@ -4,43 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="110dp"
     android:layout_margin="10dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/produto_item_titulo"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:maxLines="2"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3"/>
+
+        <ImageView
+            android:id="@+id/produto_item_imagem"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHorizontal_weight="3"
+            android:scaleType="centerCrop"
+            android:src="@drawable/produto_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/produto_item_titulo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Salada de fruta" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/produto_item_titulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintHorizontal_weight="7"
+            android:fontFamily="@font/montserrat_bold"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/produto_item_imagem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/lorem/random" />
 
         <TextView
             android:id="@+id/produto_item_descricao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="Laranja, manga e uva"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat"
             app:layout_constraintEnd_toEndOf="parent"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="@+id/produto_item_titulo"
             app:layout_constraintTop_toBottomOf="@+id/produto_item_titulo"
-            app:layout_constraintStart_toStartOf="@+id/produto_item_titulo"/>
+            tools:text="@tools:sample/lorem/random" />
 
         <TextView
             android:id="@+id/produto_item_valor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="19,99"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/produto_item_titulo"
             app:layout_constraintTop_toBottomOf="@+id/produto_item_descricao"
-            app:layout_constraintStart_toStartOf="@+id/produto_item_titulo"/>
+            tools:text="R$ 19,99" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
