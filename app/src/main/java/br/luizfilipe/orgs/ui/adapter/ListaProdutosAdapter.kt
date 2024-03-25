@@ -4,18 +4,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import br.luizfilipe.orgs.database.AppDataBase
+import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
 import br.luizfilipe.orgs.databinding.ProdutoItemBinding
-import br.luizfilipe.orgs.ui.extensions.tentaCarregarImagem
-import br.luizfilipe.orgs.ui.model.Produto
-import java.math.BigDecimal
-import java.text.NumberFormat
+import br.luizfilipe.orgs.extensions.formataParaMoedaBrasileira
+import br.luizfilipe.orgs.extensions.tentaCarregarImagem
+import br.luizfilipe.orgs.model.Produto
 import java.util.Collections
-import java.util.Locale
 
 class ListaProdutosAdapter(
-    produtos: List<Produto>,
+    produtos: List<Produto> = emptyList(),
     private val context: Context,
-    var quandoClicaNoItem: (produto: Produto) -> Unit = {}
+    var quandoClicaNoItem: (produto: Produto) -> Unit = {},
+    private val produtoDAORoom: ProdutoDAORoom
 ) : RecyclerView.Adapter<ListaProdutosAdapter.ProdutoViewHolder>() {
 
     private val produtos = produtos.toMutableList()
@@ -44,15 +45,22 @@ class ListaProdutosAdapter(
     fun troca(positionInitial: Int, positionFinal: Int) {
         Collections.swap(produtos, positionInitial, positionFinal)
         notifyItemMoved(positionInitial, positionFinal)
+        val dao = AppDataBase.getInstance(context).produtoDaoRoom()
+        for (produto in produtos){
+            dao.upadate(produto)
+        }
     }
 
     fun remove(position: Int) {
+        val produto = produtos.get(position)
         produtos.removeAt(position)
         notifyItemRemoved(position)
+        Thread{
+            produtoDAORoom.remove(produto)
+        }.start()
     }
 
-
-  inner  class ProdutoViewHolder(private val binding: ProdutoItemBinding) :
+    inner class ProdutoViewHolder(private val binding: ProdutoItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var produto: Produto
@@ -66,12 +74,13 @@ class ListaProdutosAdapter(
         }
 
         fun vincula(produto: Produto) {
+            this.produto = produto
             val nome = binding.produtoItemTitulo
             nome.text = produto.nome
             val descricao = binding.produtoItemDescricao
             descricao.text = produto.descricao
             val valor = binding.produtoItemValor
-            val valorMoeda: String = formataParaMoedaBrasileira(produto.valor)
+            val valorMoeda: String = produto.valor.formataParaMoedaBrasileira()
             valor.text = valorMoeda
 
             /*val visibilidade = if(produto.imagem != null){
@@ -83,11 +92,6 @@ class ListaProdutosAdapter(
             binding.produtoItemImagem.visibility = visibilidade*/
 
             binding.produtoItemImagem.tentaCarregarImagem(produto.imagem)
-        }
-
-        private fun formataParaMoedaBrasileira(valor: BigDecimal): String {
-            val formatador = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
-            return formatador.format(valor)
         }
 
     }

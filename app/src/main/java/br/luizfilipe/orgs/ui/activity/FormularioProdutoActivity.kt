@@ -3,11 +3,12 @@ package br.luizfilipe.orgs.ui.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
+import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityFormularioProdutoBinding
-import br.luizfilipe.orgs.ui.dao.ProdutoDAO
+import br.luizfilipe.orgs.extensions.tentaCarregarImagem
+import br.luizfilipe.orgs.model.Produto
 import br.luizfilipe.orgs.ui.dialog.FormularioImagemDialog
-import br.luizfilipe.orgs.ui.extensions.tentaCarregarImagem
-import br.luizfilipe.orgs.ui.model.Produto
 import java.math.BigDecimal
 
 private const val CADASTRAR_PRODUTO = "Cadastrar produto"
@@ -37,10 +38,11 @@ class FormularioProdutoActivity : AppCompatActivity() {
 
     private fun configuraBotaoSalvar() {
         val button = binding.activityFormularioButton
-        val dao = ProdutoDAO()
+        val db = AppDataBase.getInstance(this)
+        val produtoDaoRoom = db.produtoDaoRoom()
         button.setOnClickListener(View.OnClickListener {
             val produtoNovo = criaProduto()
-            dao.insert(produtoNovo)
+            produtoDaoRoom.salva(produtoNovo)
             finish()
         })
     }

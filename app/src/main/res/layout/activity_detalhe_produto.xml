@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/activity_detalhes_preco"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi delenti, omnis." />
+            tools:text="@tools:sample/lorem[10]" />
 
         <TextView
             android:id="@+id/activity_detalhe_descricao"

@@ -1,10 +1,8 @@
 package br.luizfilipe.orgs.ui.helpercallback
 
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.RecyclerView
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
-import br.luizfilipe.orgs.ui.dao.ProdutoDAO
 
 
 class ProdutoItemTouchHelperCallback : ItemTouchHelper.Callback {
@@ -35,18 +33,13 @@ class ProdutoItemTouchHelperCallback : ItemTouchHelper.Callback {
     }
 
     private fun trocaProdutos(positionInitial: Int, positionFinal: Int) {
-        ProdutoDAO().troca(positionInitial, positionFinal)
         adapterItemTouchHelper.troca(positionInitial, positionFinal)
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val posicaoDaNotaDeslizada = viewHolder.adapterPosition
-        remove(posicaoDaNotaDeslizada)
+        adapterItemTouchHelper.remove(posicaoDaNotaDeslizada)
     }
 
-    private fun remove(position: Int){
-        ProdutoDAO().remove(position)
-        adapterItemTouchHelper.remove(position)
-    }
 
 }

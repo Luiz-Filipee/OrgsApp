@@ -1,4 +1,4 @@
-package br.luizfilipe.orgs.ui.extensions
+package br.luizfilipe.orgs.extensions
 
 import java.math.BigDecimal
 import java.text.NumberFormat

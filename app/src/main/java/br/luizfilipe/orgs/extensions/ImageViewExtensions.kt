@@ -1,4 +1,4 @@
-package br.luizfilipe.orgs.ui.extensions
+package br.luizfilipe.orgs.extensions
 
 import android.widget.ImageView
 import br.luizfilipe.orgs.R

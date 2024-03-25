@@ -6,22 +6,19 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import br.luizfilipe.orgs.database.AppDataBase
+import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
 import br.luizfilipe.orgs.databinding.ActivityListaProdutoBinding
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_PRODUTO
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.TITULO_APPBAR
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
-import br.luizfilipe.orgs.ui.dao.ProdutoDAO
 import br.luizfilipe.orgs.ui.helpercallback.ProdutoItemTouchHelperCallback
 
 
 class ListaProdutosActivity() : AppCompatActivity() {
 
-    private val dao = ProdutoDAO()
-
-    private val adapter = ListaProdutosAdapter(
-        context = this,
-        produtos = dao.getAll()
-    )
+    private lateinit var produtoDAORoom: ProdutoDAORoom
+    private lateinit var adapter: ListaProdutosAdapter
     private val binding by lazy {
         ActivityListaProdutoBinding.inflate(layoutInflater)
     }
@@ -30,13 +27,21 @@ class ListaProdutosActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         title = TITULO_APPBAR
         setContentView(binding.root)
+
+        produtoDAORoom = AppDataBase.getInstance(this).produtoDaoRoom()
+        adapter = ListaProdutosAdapter(
+            context = this,
+           produtoDAORoom =  produtoDAORoom
+        )
         configuraRecyclerView()
         configuraFab()
     }
 
     override fun onResume() {
-        adapter.atualiza(dao.getAll())
         super.onResume()
+        val db = AppDataBase.getInstance(this)
+        val produtoDaoRoom = db.produtoDaoRoom()
+        adapter.atualiza(produtoDaoRoom.buscaTodos())
     }
 
     private fun configuraRecyclerView() {

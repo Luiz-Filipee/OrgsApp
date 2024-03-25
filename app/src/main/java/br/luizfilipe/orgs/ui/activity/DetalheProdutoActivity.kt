@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import br.luizfilipe.orgs.databinding.ActivityDetalheProdutoBinding
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_PRODUTO
-import br.luizfilipe.orgs.ui.extensions.formataParaMoedaBrasileira
-import br.luizfilipe.orgs.ui.extensions.tentaCarregarImagem
-import br.luizfilipe.orgs.ui.model.Produto
+import br.luizfilipe.orgs.extensions.formataParaMoedaBrasileira
+import br.luizfilipe.orgs.extensions.tentaCarregarImagem
+import br.luizfilipe.orgs.model.Produto
 
 class DetalheProdutoActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -25,6 +25,7 @@ class DetalheProdutoActivity : AppCompatActivity() {
     }
 
     private fun preencheCampos(produtoCarregado: Produto){
+        // Podemos ler da seguinte maneira, com este objeto 'binding', faça o seguinte
         with(binding){
             activityDetalhesImageview.tentaCarregarImagem(produtoCarregado.imagem)
             activityDetalheTitulo.text = produtoCarregado.nome
