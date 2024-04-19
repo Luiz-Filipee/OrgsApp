@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/edit"
+        android:contentDescription="@string/edita"
+        android:icon="@drawable/ic_menu_ordena"
+        android:title="@string/edita"
+        app:showAsAction="ifRoom">
 
+        <menu>
+            <item
+                android:id="@+id/nome_desc"
+                android:title="@string/nome_desc" />
+            <item
+                android:id="@+id/nome_asc"
+                android:title="@string/nome_asc" />
+            <item
+                android:id="@+id/descricao_desc"
+                android:title="@string/descricao_desc" />
+            <item
+                android:id="@+id/descricao_asc"
+                android:title="@string/descricao_asc" />
+            <item
+                android:id="@+id/valor_desc"
+                android:title="@string/valor_desc" />
+            <item
+                android:id="@+id/valor_asc"
+                android:title="@string/valor_asc" />
+            <item
+                android:id="@+id/sem_ordem"
+                android:title="@string/sem_ordem" />
+        </menu>
+    </item>
 </menu>

@@ -2,14 +2,19 @@ package br.luizfilipe.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import br.luizfilipe.orgs.R
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
 import br.luizfilipe.orgs.databinding.ActivityListaProdutoBinding
-import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_PRODUTO
+import br.luizfilipe.orgs.model.Produto
+import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_PRODUTO_ID
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.TITULO_APPBAR
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
 import br.luizfilipe.orgs.ui.helpercallback.ProdutoItemTouchHelperCallback
@@ -19,8 +24,8 @@ class ListaProdutosActivity() : AppCompatActivity() {
 
     private lateinit var produtoDAORoom: ProdutoDAORoom
     private lateinit var adapter: ListaProdutosAdapter
-    private val binding by lazy {
-        ActivityListaProdutoBinding.inflate(layoutInflater)
+    private val binding by lazy { // so e iniciada qunado acessada pela primeira vez
+        ActivityListaProdutoBinding.inflate(layoutInflater) // inflando o layout associado a essa activity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +36,7 @@ class ListaProdutosActivity() : AppCompatActivity() {
         produtoDAORoom = AppDataBase.getInstance(this).produtoDaoRoom()
         adapter = ListaProdutosAdapter(
             context = this,
-           produtoDAORoom =  produtoDAORoom
+            produtoDAORoom = produtoDAORoom
         )
         configuraRecyclerView()
         configuraFab()
@@ -52,11 +57,47 @@ class ListaProdutosActivity() : AppCompatActivity() {
                 this,
                 DetalheProdutoActivity::class.java
             ).apply {
-                putExtra(CHAVE_PRODUTO, it)
+                putExtra(CHAVE_PRODUTO_ID, it.id)
             }
             startActivity(intent)
         }
         congiguraItemTouchHelper(recyclerView)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_ordena_itens, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val produtosOrdenados: List<Produto>? = when (item.itemId) {
+            R.id.nome_asc ->
+                produtoDAORoom.buscaTodosOrdenaPorNomeAsc()
+
+            R.id.nome_desc ->
+                produtoDAORoom.buscaTodosOrdenaPorNomeDesc()
+
+            R.id.descricao_asc ->
+                produtoDAORoom.buscaTodosOrdenaPorDescricaoAsc()
+
+            R.id.descricao_desc ->
+                produtoDAORoom.buscaTodosOrdenaPorDescricaoDesc()
+
+            R.id.valor_desc ->
+                produtoDAORoom.buscaTodosOrdenaPorValorDesc()
+
+            R.id.valor_asc ->
+                produtoDAORoom.buscaTodosOrdenaPorValorAsc()
+
+            R.id.sem_ordem ->
+                produtoDAORoom.buscaTodos()
+
+            else -> null
+        }
+        produtosOrdenados?.let { // pode encontrar ou nao um produto
+            adapter.atualiza(it) //atualiza o adapter a cada vez que um menu for selecionado
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

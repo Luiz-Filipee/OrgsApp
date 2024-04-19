@@ -13,4 +13,13 @@
     <string name="imagemupload">ImagemUpload</string>
     <string name="carregar">Carregar</string>
     <string name="url_da_imagem">URL da imagem</string>
+    <string name="remove">remove</string>
+    <string name="edita">Edita</string>
+    <string name="valor_asc">Valor Asc</string>
+    <string name="valor_desc">Valor Desc</string>
+    <string name="descricao_asc">Descricao Asc</string>
+    <string name="descricao_desc">Descricao Desc</string>
+    <string name="nome_asc">Nome Asc</string>
+    <string name="nome_desc">Nome Desc</string>
+    <string name="sem_ordem">Sem Ordem</string>
 </resources>

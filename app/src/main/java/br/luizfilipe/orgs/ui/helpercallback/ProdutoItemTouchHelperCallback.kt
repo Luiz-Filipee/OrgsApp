@@ -5,20 +5,17 @@ import androidx.recyclerview.widget.RecyclerView
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
 
 
-class ProdutoItemTouchHelperCallback : ItemTouchHelper.Callback {
-    private val adapterItemTouchHelper: ListaProdutosAdapter
-    constructor(adapterItemTouchHelper: ListaProdutosAdapter){
-       this.adapterItemTouchHelper = adapterItemTouchHelper
-    }
-
+class ProdutoItemTouchHelperCallback(private val adapterItemTouchHelper: ListaProdutosAdapter) :
+    ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
         val movimentRemove = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        val movimentReposition = ItemTouchHelper.DOWN or ItemTouchHelper.UP or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        return makeMovementFlags(movimentReposition ,movimentRemove)
+        val movimentReposition =
+            ItemTouchHelper.DOWN or ItemTouchHelper.UP or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        return makeMovementFlags(movimentReposition, movimentRemove)
     }
 
     override fun onMove(

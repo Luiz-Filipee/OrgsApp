@@ -2,17 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search_24dp"
-        android:title="@string/pesquisa"
-        android:contentDescription="@string/descricaosearch"
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_edita_nota"
+        android:title="@string/edita"
+        android:contentDescription="@string/edita"
         app:showAsAction="ifRoom"
         />
 
     <item
-        android:id="@+id/more"
-        android:title="@string/mais"
-        android:contentDescription="@string/descricaomore"
-        app:showAsAction="never"
+        android:id="@+id/remove"
+        android:icon="@drawable/baseline_delete_24"
+        android:title="@string/remove"
+        android:contentDescription="@string/remove"
+        app:showAsAction="ifRoom"
         />
 </menu>

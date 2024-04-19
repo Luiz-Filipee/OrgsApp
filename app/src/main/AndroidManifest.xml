@@ -24,8 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.DetalheProdutoActivity"
-            android:theme="@style/Theme.Orgs.NoActionBar" />
+            android:name=".ui.activity.DetalheProdutoActivity" />
         <activity
             android:name=".ui.activity.FormularioProdutoActivity"
             android:exported="false" />
