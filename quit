@@ -1,0 +1,41 @@
+[33mcommit 1572ef5e152cf1435240a58b89e92e4590154610[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: luizfilipe <luizkato8@Gmail.com>
+Date:   Tue Apr 16 16:31:50 2024 -0400
+
+    refatoracao, implementacao menu ordena
+
+[33mcommit 8557466b8ea994c519287e4b60958a2b81a9e1d5[m
+Author: luizfilipe <luizkato8@Gmail.com>
+Date:   Mon Mar 25 10:25:54 2024 -0400
+
+    integrando o room
+
+[33mcommit d280ec783cab284f05478ed009d39020385f0e2e[m
+Author: luizfilipe <luizkato8@Gmail.com>
+Date:   Fri Mar 22 15:38:04 2024 -0400
+
+    adionando a tela de destaque do produto
+
+[33mcommit fe874d331454723b0e17d73e38b75b045b39de51[m
+Author: luizfilipe <luizkato8@Gmail.com>
+Date:   Tue Mar 12 09:13:23 2024 -0400
+
+    adicionando o item e a receycler view
+
+[33mcommit 677063bc20666eead774171a38184fa38db1c888[m
+Author: luizfilipe <luizkato8@Gmail.com>
+Date:   Tue Mar 12 09:12:26 2024 -0400
+
+    criando o adapter da recyclerview
+
+[33mcommit 22df6b3c65a904af5962cda0b2f40711fcafe78e[m
+Author: luizfilipe <luizkato8@Gmail.com>
+Date:   Tue Mar 12 09:11:33 2024 -0400
+
+    criando produto
+
+[33mcommit 31e6f7ea7b77981ec535317932096889a6d7b19d[m
+Author: luizfilipe <luizkato8@Gmail.com>
+Date:   Mon Mar 11 07:50:02 2024 -0400
+
+    first commit

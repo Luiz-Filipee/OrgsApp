@@ -46,7 +46,7 @@ class ListaProdutosAdapter(
         Collections.swap(produtos, positionInitial, positionFinal)
         notifyItemMoved(positionInitial, positionFinal)
         val dao = AppDataBase.getInstance(context).produtoDaoRoom()
-        for (produto in produtos){
+        for (produto in produtos) {
             dao.upadate(produto)
         }
     }
@@ -55,7 +55,7 @@ class ListaProdutosAdapter(
         val produto = produtos.get(position)
         produtos.removeAt(position)
         notifyItemRemoved(position)
-        Thread{
+        Thread {
             produtoDAORoom.remove(produto)
         }.start()
     }
@@ -66,8 +66,8 @@ class ListaProdutosAdapter(
         private lateinit var produto: Produto
 
         init {
-            itemView.setOnClickListener{
-                if(::produto.isInitialized){
+            itemView.setOnClickListener {
+                if (::produto.isInitialized) {
                     quandoClicaNoItem(produto)
                 }
             }

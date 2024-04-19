@@ -23,6 +23,7 @@ class FormularioProdutoActivity : AppCompatActivity() {
     }
     private var url: String? = null
     private var idProduto = 0L
+    private var idUser = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -30,6 +31,7 @@ class FormularioProdutoActivity : AppCompatActivity() {
         configuraBotaoSalvar()
         configuraBotaoCarregarImagem()
         tentaCarregarProduto()
+        tentaCarregarUser()
     }
 
     private fun tentaCarregarProduto() {
@@ -39,6 +41,10 @@ class FormularioProdutoActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         tentaBuscar()
+    }
+
+    private fun tentaCarregarUser() {
+        idUser = intent.getLongExtra(ConstanteActivities.CHAVE_USER_ID, 0L)
     }
 
     private fun tentaBuscar() {

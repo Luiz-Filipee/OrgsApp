@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/perfil"
+        android:contentDescription="@string/perfil"
+        android:icon="@drawable/ic_perfil_pessoa"
+        android:title="@string/perfil"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/edit"
         android:contentDescription="@string/edita"
@@ -32,4 +40,5 @@
                 android:title="@string/sem_ordem" />
         </menu>
     </item>
+
 </menu>

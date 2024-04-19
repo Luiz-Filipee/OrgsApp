@@ -15,8 +15,14 @@
         android:theme="@style/Theme.Orgs"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.CadastroUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.PerfilUserActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,13 +30,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.DetalheProdutoActivity" />
+            android:name=".ui.activity.LoginActivity"
+            android:exported="false" />
+        <activity android:name=".ui.activity.DetalheProdutoActivity" />
         <activity
             android:name=".ui.activity.FormularioProdutoActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activity.ListaProdutosActivity"
-            android:exported="true"/>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

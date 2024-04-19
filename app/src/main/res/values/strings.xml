@@ -22,4 +22,10 @@
     <string name="nome_asc">Nome Asc</string>
     <string name="nome_desc">Nome Desc</string>
     <string name="sem_ordem">Sem Ordem</string>
+    <string name="entrar">Continuar</string>
+    <string name="perfil">Perfil</string>
+    <string name="email">Email</string>
+    <string name="senha">Senha</string>
+    <string name="username">Username</string>
+    <string name="Login">Login\n</string>
 </resources>

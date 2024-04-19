@@ -15,38 +15,44 @@ import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
 import br.luizfilipe.orgs.databinding.ActivityListaProdutoBinding
 import br.luizfilipe.orgs.model.Produto
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_PRODUTO_ID
+import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_USER_ID
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.TITULO_APPBAR
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
 import br.luizfilipe.orgs.ui.helpercallback.ProdutoItemTouchHelperCallback
+import kotlinx.coroutines.runBlocking
 
 
 class ListaProdutosActivity() : AppCompatActivity() {
 
-    private lateinit var produtoDAORoom: ProdutoDAORoom
     private lateinit var adapter: ListaProdutosAdapter
     private val binding by lazy { // so e iniciada qunado acessada pela primeira vez
         ActivityListaProdutoBinding.inflate(layoutInflater) // inflando o layout associado a essa activity
     }
-
+    private val produtoDao by lazy {
+        val db = AppDataBase.getInstance(this)
+        db.produtoDaoRoom()
+    }
+    private val userDao by lazy {
+        val db = AppDataBase.getInstance(this)
+        db.userDaoRoom()
+    }
+    private var idUser = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = TITULO_APPBAR
         setContentView(binding.root)
-
-        produtoDAORoom = AppDataBase.getInstance(this).produtoDaoRoom()
         adapter = ListaProdutosAdapter(
             context = this,
-            produtoDAORoom = produtoDAORoom
+            produtoDAORoom = produtoDao
         )
         configuraRecyclerView()
         configuraFab()
+        tentaCarregarUser()
     }
 
     override fun onResume() {
         super.onResume()
-        val db = AppDataBase.getInstance(this)
-        val produtoDaoRoom = db.produtoDaoRoom()
-        adapter.atualiza(produtoDaoRoom.buscaTodos())
+        adapter.atualiza(produtoDao.buscaTodos())
     }
 
     private fun configuraRecyclerView() {
@@ -70,27 +76,31 @@ class ListaProdutosActivity() : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.perfil){
+                abrePerfilUser()
+        }
+
         val produtosOrdenados: List<Produto>? = when (item.itemId) {
             R.id.nome_asc ->
-                produtoDAORoom.buscaTodosOrdenaPorNomeAsc()
+                produtoDao.buscaTodosOrdenaPorNomeAsc()
 
             R.id.nome_desc ->
-                produtoDAORoom.buscaTodosOrdenaPorNomeDesc()
+                produtoDao.buscaTodosOrdenaPorNomeDesc()
 
             R.id.descricao_asc ->
-                produtoDAORoom.buscaTodosOrdenaPorDescricaoAsc()
+                produtoDao.buscaTodosOrdenaPorDescricaoAsc()
 
             R.id.descricao_desc ->
-                produtoDAORoom.buscaTodosOrdenaPorDescricaoDesc()
+                produtoDao.buscaTodosOrdenaPorDescricaoDesc()
 
             R.id.valor_desc ->
-                produtoDAORoom.buscaTodosOrdenaPorValorDesc()
+                produtoDao.buscaTodosOrdenaPorValorDesc()
 
             R.id.valor_asc ->
-                produtoDAORoom.buscaTodosOrdenaPorValorAsc()
+                produtoDao.buscaTodosOrdenaPorValorAsc()
 
             R.id.sem_ordem ->
-                produtoDAORoom.buscaTodos()
+                produtoDao.buscaTodos()
 
             else -> null
         }
@@ -100,6 +110,19 @@ class ListaProdutosActivity() : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun tentaCarregarUser() {
+        idUser = intent.getLongExtra(CHAVE_USER_ID, 0L)
+    }
+
+    private fun abrePerfilUser(){
+        val userId = userDao.buscaPorId(idUser)
+        if(userId != null){
+            val intent = Intent(this, PerfilUserActivity::class.java).apply {
+                putExtra(CHAVE_USER_ID, userId)
+            }
+            startActivity(intent)
+        }
+    }
 
     private fun congiguraItemTouchHelper(recyclerView: RecyclerView) {
         val itemTouchHelper = ItemTouchHelper(ProdutoItemTouchHelperCallback(adapter))
