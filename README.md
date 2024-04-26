@@ -6,13 +6,13 @@ Este aplicativo foi desenvolvido para simplificar o gerencimaneto de compras de 
 ## Funcionamento do aplicativo
 
 ## Estrutura do Projeto
-/manifests      # Configurações do projeto
-/java           # Código-fonte principal do aplicativo
-  /database     # Implementação do Banco de dados
-  /extensions   # Extend Function em kotlin para converter tipos de dados
-  /model        # Entidades
-  /ui           # Interfaces do úsuario
-/tests          # Testes automatizados, garantindo a qualidade
+/manifests      # Configurações do projeto.
+/java           # Código-fonte principal do aplicativo.
+  /database     # Implementação do Banco de dados.
+  /extensions   # Extend Function em kotlin para converter tipos de dados.
+  /model        # Entidades.
+  /ui           # Interfaces do úsuario.
+/tests          # Testes automatizados, garantindo a qualidade.
 /res            # Layouts, imagens, fonts, menus, etc.
 
 ## Tecnolgias utilizadas
