@@ -3,8 +3,6 @@ Controle de Compras
 ## Sobre o projeto
 Este aplicativo foi desenvolvido para simplificar o gerencimaneto de compras de pessoa. Permitindo um controle rápido e eficas através de uma interface fácil e moderna.
 
-## Funcionamento do aplicativo
-
 ## Estrutura do Projeto
 `````
 /manifests      # Configurações do projeto.
