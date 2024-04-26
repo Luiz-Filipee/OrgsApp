@@ -6,6 +6,7 @@ Este aplicativo foi desenvolvido para simplificar o gerencimaneto de compras de 
 ## Funcionamento do aplicativo
 
 ## Estrutura do Projeto
+`````
 /manifests      # Configurações do projeto.
 /java           # Código-fonte principal do aplicativo.
   /database     # Implementação do Banco de dados.
@@ -14,6 +15,7 @@ Este aplicativo foi desenvolvido para simplificar o gerencimaneto de compras de 
   /ui           # Interfaces do úsuario.
 /tests          # Testes automatizados, garantindo a qualidade.
 /res            # Layouts, imagens, fonts, menus, etc.
+`````
 
 ## Tecnolgias utilizadas
 - **Android Studio**: Ambiente de execuçao do aplicativo.
