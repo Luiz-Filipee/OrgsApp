@@ -1,8 +1,12 @@
 package br.luizfilipe.orgs.ui.helpercallback
 
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 
 class ProdutoItemTouchHelperCallback(private val adapterItemTouchHelper: ListaProdutosAdapter) :
@@ -25,11 +29,14 @@ class ProdutoItemTouchHelperCallback(private val adapterItemTouchHelper: ListaPr
     ): Boolean {
         val positionInitial = viewHolder.adapterPosition
         val positionFinal = target.adapterPosition
-        trocaProdutos(positionInitial, positionFinal)
+        val scope = MainScope()
+        scope.launch(Dispatchers.IO){
+            trocaProdutos(positionInitial, positionFinal)
+        }
         return true
     }
 
-    private fun trocaProdutos(positionInitial: Int, positionFinal: Int) {
+    suspend private fun trocaProdutos(positionInitial: Int, positionFinal: Int) {
         adapterItemTouchHelper.troca(positionInitial, positionFinal)
     }
 

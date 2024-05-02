@@ -7,40 +7,44 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import br.luizfilipe.orgs.model.Produto
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProdutoDAORoom {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun salva(o: Produto)
+    suspend fun salva(o: Produto)
 
     @Delete
-    fun remove(o: Produto)
+    suspend fun remove(o: Produto)
 
     @Update
-    fun upadate(o: Produto)
+    suspend fun upadate(o: Produto)
 
     @Query("SELECT * FROM produto")
-    fun buscaTodos(): List<Produto>
+    suspend fun buscaTodos(): List<Produto>
 
     @Query("SELECT * FROM produto WHERE id = :id")
-    fun buscaPorId(id: Long): Produto?
+    suspend fun buscaPorId(id: Long): Produto?
+
+    @Query("SELECT * FROM produto WHERE nome = :nomeBuscado")
+    suspend fun buscaPorNome(nomeBuscado: String): Produto?
 
     @Query("SELECT * FROM produto ORDER BY nome ASC")
-    fun buscaTodosOrdenaPorNomeAsc(): List<Produto>?
+    suspend fun buscaTodosOrdenaPorNomeAsc(): List<Produto>?
 
     @Query("SELECT * FROM produto ORDER BY nome DESC")
-    fun buscaTodosOrdenaPorNomeDesc(): List<Produto>?
+    suspend fun buscaTodosOrdenaPorNomeDesc(): List<Produto>?
 
     @Query("SELECT * FROM produto ORDER BY descricao ASC")
-    fun buscaTodosOrdenaPorDescricaoAsc(): List<Produto>?
+    suspend fun buscaTodosOrdenaPorDescricaoAsc(): List<Produto>?
 
     @Query("SELECT * FROM produto ORDER BY descricao DESC")
-    fun buscaTodosOrdenaPorDescricaoDesc(): List<Produto>?
+    suspend fun buscaTodosOrdenaPorDescricaoDesc(): List<Produto>?
 
     @Query("SELECT * FROM produto ORDER BY valor ASC")
-    fun buscaTodosOrdenaPorValorAsc(): List<Produto>?
+    suspend fun buscaTodosOrdenaPorValorAsc(): List<Produto>?
 
     @Query("SELECT * FROM produto ORDER BY valor DESC")
-    fun buscaTodosOrdenaPorValorDesc(): List<Produto>?
+    suspend fun buscaTodosOrdenaPorValorDesc(): List<Produto>?
 }

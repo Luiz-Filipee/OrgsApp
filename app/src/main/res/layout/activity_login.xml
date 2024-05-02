@@ -10,18 +10,42 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.activity.FormularioProdutoActivity">
+        tools:context=".ui.activity.produto.FormularioProdutoActivity">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/activity_login_ajuda"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/ajuda"
+            android:src="@drawable/ic_ajuda"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/activity_login_imagem"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="90dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/imagemupload"
-            android:src="@drawable/ic_food" />
+            android:src="@drawable/orgs_logo"
+            app:layout_constraintVertical_bias="0.15" />
+
+        <TextView
+            android:id="@+id/name_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Orgs"
+            android:textSize="40sp"
+            android:textColor="@android:color/darker_gray"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_login_imagem"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_user_nome"
@@ -30,7 +54,7 @@
             android:layout_margin="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activity_login_imagem"
+            app:layout_constraintTop_toBottomOf="@id/name_app"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -63,28 +87,45 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/activity_login_cadastrar_user"
+            android:id="@+id/activity_login_forgot_password_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cadastrar um usuario"
+            android:text="@string/esqueceu_a_senha"
+            android:textColor="@color/colorPrimary"
             style="@style/TextAppearance.Material3.TitleMedium"
-            app:layout_constraintTop_toBottomOf="@+id/login_user_senha"
+            app:layout_constraintTop_toBottomOf="@+id/activity_login_button"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/activity_login_cadastrar_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cadastrar_um_usuario"
+            android:textColor="@color/colorPrimary"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            app:layout_constraintTop_toBottomOf="@+id/activity_login_forgot_password_user"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:clickable="true"
+            android:focusable="true" />
 
         <Button
             android:id="@+id/activity_login_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:hint="Login"
+            android:hint="Entrar"
             android:textColorHint="@color/white"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_user_senha" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>
