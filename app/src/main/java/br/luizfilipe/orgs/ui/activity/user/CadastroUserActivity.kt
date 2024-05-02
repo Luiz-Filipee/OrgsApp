@@ -1,4 +1,4 @@
-package br.luizfilipe.orgs.ui.activity
+package br.luizfilipe.orgs.ui.activity.user
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,9 +7,7 @@ import android.widget.Toast
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityCadastroUserBinding
 import br.luizfilipe.orgs.model.User
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -22,13 +20,14 @@ class CadastroUserActivity : Activity() {
         val db = AppDataBase.getInstance(this)
         db.userDaoRoom()
     }
-    private var idUser: Long = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = CADASTRAR_USUARIO
         setContentView(binding.root)
         configuraBotaoSalvar()
+        binding.cadastroUserClose.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun configuraBotaoSalvar() {
@@ -39,24 +38,35 @@ class CadastroUserActivity : Activity() {
             val senha = binding.cadastroUserCampoSenha.text.toString()
             val telefone = binding.cadastroUserCampoTelefone.text.toString()
 
-            if (nome.isNotEmpty() && email.isNotEmpty() && senha.isNotEmpty() && telefone.isNotEmpty()) {
+            if (validaInformacoes(nome, email, senha, telefone)) {
                 val user = criaUser()
-                val scope = MainScope()
                 try {
-                    scope.launch(Dispatchers.IO) {
+                    MainScope().launch(Dispatchers.IO) {
                         userDao.salva(user)
                         finish()
                     }
                 } catch (e: Exception) {
                     Toast.makeText(
-                        this, "Insira todas as informacoes corretas",
+                        this, "Erro ao criar usuario",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+            }else{
+                Toast.makeText(
+                    this, "Todos os campos devem ser preenchidos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
     }
+
+    private fun validaInformacoes(
+        nome: String,
+        email: String,
+        senha: String,
+        telefone: String
+    ) = nome.isNotEmpty() && email.isNotEmpty() && senha.isNotEmpty() && telefone.isNotEmpty()
 
     private fun criaUser(): User {
         val nome = binding.cadastroUserCampoNome.text.toString()
