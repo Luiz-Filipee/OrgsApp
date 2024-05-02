@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item
+        android:id="@+id/item_edita"
+        android:enabled="true"
+        android:icon="@drawable/ic_edita_nota"
+        android:title="@string/editar"
+        />
+
+    <item
+        android:id="@+id/item_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="@string/inicio"
+        />
+
+    <item
+        android:id="@+id/item_logout"
+        android:enabled="true"
+        android:icon="@drawable/ic_sair"
+        android:title="@string/sair"
+        />
+
 </menu>
