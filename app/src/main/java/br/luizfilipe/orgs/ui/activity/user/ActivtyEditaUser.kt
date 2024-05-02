@@ -1,16 +1,17 @@
 package br.luizfilipe.orgs.ui.activity.user
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityEditaUserBinding
-import br.luizfilipe.orgs.ui.activity.ConstanteActivities
+import br.luizfilipe.orgs.preferences.dataStore
+import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class ActivtyEditaUser : Activity() {
+class ActivtyEditaUser : AppCompatActivity() {
     private val binding by lazy {
         ActivityEditaUserBinding.inflate(layoutInflater)
     }
@@ -25,16 +26,16 @@ class ActivtyEditaUser : Activity() {
     }
 
     private fun tentaCarregarUser() {
-        MainScope().launch(Dispatchers.IO) {
-            intent.getLongExtra(ConstanteActivities.CHAVE_USER_ID, 0L).let { usuarioId ->
-                userDao.buscaPorId(usuarioId).collect { user ->
-                    binding.activityEditaUserCampoNome.setText(user.nome)
-                    binding.activityEditaUserCampoEmail.setText(user.email)
-                    userDao.salva(user)
+        lifecycleScope.launch {
+            dataStore.data.collect { preferences ->
+                preferences[usuarioLogadoPreferences]?.let { usuarioId ->
+                    userDao.buscaPorId(usuarioId).collect { user ->
+                        binding.activityEditaUserCampoNome.setText(user.nome)
+                        binding.activityEditaUserCampoEmail.setText(user.email)
+                    }
                 }
             }
         }
     }
-
 
 }

@@ -3,6 +3,7 @@ package br.luizfilipe.orgs.ui.activity.produto
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityFormularioProdutoBinding
 import br.luizfilipe.orgs.extensions.tentaCarregarImagem
@@ -52,11 +53,11 @@ class FormularioProdutoActivity : AppCompatActivity() {
     }
 
     private fun tentaBuscar() {
-        scope.launch {
-            produtoDAO.buscaPorId(idProduto)?.let {
+        lifecycleScope.launch {
+            produtoDAO.buscaPorId(idProduto).collect { produto ->
                 withContext(Dispatchers.Main) {
                     title = "Alterar produto"
-                    preencheCampos(it)
+                    preencheCampos(produto)
                 }
             }
         }

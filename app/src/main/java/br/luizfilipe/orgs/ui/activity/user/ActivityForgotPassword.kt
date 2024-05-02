@@ -1,16 +1,17 @@
 package br.luizfilipe.orgs.ui.activity.user
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityForgotPasswordBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class ActivityForgotPassword : Activity() {
+class ActivityForgotPassword : AppCompatActivity() {
     private val binding by lazy {
         ActivityForgotPasswordBinding.inflate(layoutInflater)
     }
@@ -22,21 +23,27 @@ class ActivityForgotPassword : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         buscaUsuarioEmail()
+        binding.activityForgotUserClose.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun buscaUsuarioEmail() {
         val buttonEnviar = binding.activityForgotUserButton
         buttonEnviar.setOnClickListener(View.OnClickListener {
             val email = binding.activityForgotUserCampoEmail.text.toString()
-            MainScope().launch(Dispatchers.IO) {
-                val user = userDao.buscaUserPorEmail(email)
-                if (user != null) {
+            lifecycleScope.launch {
+                userDao.buscaUserPorEmail(email)?.let { user ->
                     Toast.makeText(
                         this@ActivityForgotPassword,
-                        "usuario encontrado",
+                        "Foi enviado um link no seu email",
                         Toast.LENGTH_SHORT
                     ).show()
-                }
+                } ?: Toast.makeText(
+                    this@ActivityForgotPassword,
+                    "Usuario nao encontrado" ,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }

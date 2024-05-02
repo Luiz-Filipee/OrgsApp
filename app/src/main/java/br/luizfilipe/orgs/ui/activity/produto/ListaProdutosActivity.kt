@@ -1,15 +1,14 @@
 package br.luizfilipe.orgs.ui.activity.produto
 
 import android.content.Intent
-import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.inputmethod.EditorInfo
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -17,13 +16,16 @@ import br.luizfilipe.orgs.R
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityListaProdutoBinding
 import br.luizfilipe.orgs.extensions.vaiPara
+import br.luizfilipe.orgs.preferences.dataStore
+import br.luizfilipe.orgs.preferences.produtoCadastrado
+import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities
 import br.luizfilipe.orgs.ui.activity.user.CadastroUserActivity
+import br.luizfilipe.orgs.ui.activity.user.LoginActivity
 import br.luizfilipe.orgs.ui.activity.user.PerfilUserActivity
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
 import br.luizfilipe.orgs.ui.helpercallback.ProdutoItemTouchHelperCallback
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class ListaProdutosActivity() : AppCompatActivity() {
 
@@ -56,12 +58,22 @@ class ListaProdutosActivity() : AppCompatActivity() {
 
     private fun tentaCarregarUser() {
         lifecycleScope.launch {
-            intent.getLongExtra(ConstanteActivities.CHAVE_USER_ID, 0L).let { usuarioId ->
-                userDao.buscaPorId(usuarioId).collect { user ->
-                    idUser = user.id
-                }
+
+            dataStore.data.collect { preferences ->
+                preferences[usuarioLogadoPreferences]?.let { usuarioId ->
+                    launch {
+                        userDao.buscaPorId(usuarioId).collect { user ->
+                            Log.i("ListaProdutos", "tentaCarregarUser: $user")
+                        }
+                    }
+                } ?: vaiParaLogin()
             }
         }
+    }
+
+    private fun vaiParaLogin() {
+        vaiPara(LoginActivity::class.java)
+        finish()
     }
 
     private fun pesquisaITem() {
@@ -88,7 +100,7 @@ class ListaProdutosActivity() : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             val produtos = produtoDao.buscaTodos()
             adapter.atualiza(produtos)
         }
@@ -97,22 +109,16 @@ class ListaProdutosActivity() : AppCompatActivity() {
     private fun configuraRecyclerView() {
         val recyclerView = binding.listaProdutoActivityRecyclerview
         recyclerView.adapter = adapter
-        adapter.quandoClicaNoItem = {
-            val intent = Intent(
-                this,
-                DetalheProdutoActivity::class.java
-            ).apply {
-                putExtra(ConstanteActivities.CHAVE_PRODUTO_ID, it.id)
+        adapter.quandoClicaNoItem = { produto ->
+            lifecycleScope.launch {
+                dataStore.edit { preferences ->
+                    preferences[produtoCadastrado] = produto.id
+                }
+                vaiPara(DetalheProdutoActivity::class.java)
             }
-            startActivity(intent)
         }
         congiguraItemTouchHelper(recyclerView)
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_ordena_itens, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
 
     private fun abreMenuOrdena() {
         val buttonFiltro = binding.listaProdutoActivityFiltrosOrdena
@@ -146,9 +152,7 @@ class ListaProdutosActivity() : AppCompatActivity() {
                 }
 
                 R.id.item_perfil -> {
-                    vaiPara(PerfilUserActivity::class.java){
-                        putExtra(ConstanteActivities.CHAVE_USER_ID, idUser)
-                    }
+                    vaiPara(PerfilUserActivity::class.java)
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -158,7 +162,11 @@ class ListaProdutosActivity() : AppCompatActivity() {
                 }
 
                 R.id.item_sair -> {
-                    finish()
+                    lifecycleScope.launch {
+                        dataStore.edit { preferences ->
+                            preferences.remove(usuarioLogadoPreferences)
+                        }
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
 
