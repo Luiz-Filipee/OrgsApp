@@ -48,6 +48,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

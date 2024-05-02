@@ -14,21 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Orgs"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.activity.user.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.user.ActivityForgotPassword"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.user.ActivtyEditaUser"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.user.CadastroUserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.user.PerfilUserActivity"
-            android:exported="false" />
+        <activity android:name=".ui.activity.user.LoginActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar"/>
+        <activity android:name=".ui.activity.user.ActivityForgotPassword"
+            android:theme="@style/Theme.Orgs.NoActionBar"/>
+        <activity android:name=".ui.activity.user.ActivtyEditaUser"
+            android:theme="@style/Theme.Orgs.NoActionBar"/>
+        <activity android:name=".ui.activity.user.CadastroUserActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar"/>
+        <activity android:name=".ui.activity.user.PerfilUserActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar"/>
         <activity
             android:name=".ui.activity.SplashScreen"
             android:exported="true">
@@ -39,12 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.produto.DetalheProdutoActivity" />
-        <activity
-            android:name=".ui.activity.produto.FormularioProdutoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.produto.ListaProdutosActivity"
-            android:exported="false" />
+        <activity android:name=".ui.activity.produto.FormularioProdutoActivity" />
+        <activity android:name=".ui.activity.produto.ListaProdutosActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

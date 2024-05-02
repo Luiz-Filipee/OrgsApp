@@ -1,10 +1,11 @@
 package br.luizfilipe.orgs.ui.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import br.luizfilipe.orgs.databinding.ActivitySplashScreenBinding
+import br.luizfilipe.orgs.extensions.vaiPara
+import br.luizfilipe.orgs.ui.activity.produto.ListaProdutosActivity
 import br.luizfilipe.orgs.ui.activity.user.LoginActivity
 
 class SplashScreen : Activity() {
@@ -18,13 +19,9 @@ class SplashScreen : Activity() {
 
         val handler = Handler()
         handler.postDelayed({
-            mostrarLoginActivity()
+            vaiPara(ListaProdutosActivity::class.java).apply {
+                finish()
+            }
         }, 2000)
-    }
-
-    private fun mostrarLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

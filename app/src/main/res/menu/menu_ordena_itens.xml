@@ -5,14 +5,10 @@
     <item
         android:id="@+id/valor_desc"
         android:enabled="true"
-        android:icon="@drawable/arrow_crescente"
-        android:title="@string/valor_desc"
-        app:showAsAction="always"/>
+        android:title="@string/valor_desc" />
     <item
         android:id="@+id/valor_asc"
         android:enabled="true"
-        android:icon="@drawable/arrow_decrescente"
-        android:title="@string/valor_asc"
-        app:showAsAction="always"/>
+        android:title="@string/valor_asc" />
 
 </menu>

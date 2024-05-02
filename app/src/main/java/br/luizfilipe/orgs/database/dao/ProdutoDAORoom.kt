@@ -25,7 +25,7 @@ interface ProdutoDAORoom {
     suspend fun buscaTodos(): List<Produto>
 
     @Query("SELECT * FROM produto WHERE id = :id")
-    suspend fun buscaPorId(id: Long): Produto?
+    fun buscaPorId(id: Long): Flow<Produto>
 
     @Query("SELECT * FROM produto WHERE nome = :nomeBuscado")
     suspend fun buscaPorNome(nomeBuscado: String): Produto?

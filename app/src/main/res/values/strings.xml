@@ -15,8 +15,8 @@
     <string name="url_da_imagem">URL da imagem</string>
     <string name="remove">remove</string>
     <string name="edita">Edita</string>
-    <string name="valor_asc">Valor</string>
-    <string name="valor_desc">Valor</string>
+    <string name="valor_asc">Maior Valor</string>
+    <string name="valor_desc">Menor Valor</string>
     <string name="descricao_asc">Descricao Asc</string>
     <string name="descricao_desc">Descricao Desc</string>
     <string name="nome_asc">Nome</string>
