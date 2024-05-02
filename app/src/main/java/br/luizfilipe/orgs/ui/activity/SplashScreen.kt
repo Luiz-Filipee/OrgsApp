@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import br.luizfilipe.orgs.databinding.ActivitySplashScreenBinding
+import br.luizfilipe.orgs.ui.activity.user.LoginActivity
 
 class SplashScreen : Activity() {
     private val binding by lazy {

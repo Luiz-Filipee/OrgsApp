@@ -16,15 +16,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.3"
-        android:src="@drawable/ic_carregamento" />
+        android:src="@drawable/orgs_logo" />
 
     <TextView
         android:id="@+id/activity_splash_screen_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="OrgsApp"
+        android:text="Orgs"
         android:textStyle="italic"
         android:textSize="30sp"
+        android:layout_marginTop="30dp"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

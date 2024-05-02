@@ -2,11 +2,9 @@ package br.luizfilipe.orgs.ui.dialog
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import br.luizfilipe.orgs.databinding.ActivityFormularioImagemBinding
 import br.luizfilipe.orgs.extensions.tentaCarregarImagem
-import com.google.android.material.snackbar.Snackbar
 
 class FormularioImagemDialog(private val context: Context) {
 

@@ -1,80 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:context=".ui.activity.produto.FormularioProdutoActivity">
+
 
         <ImageView
-            android:id="@+id/activity_imagem_perfil"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/background_perfil"
+            android:layout_width="0dp"
+            android:layout_height="245dp"
+            android:background="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/imagem_default"
-            android:scaleType="centerCrop"/>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/activity_imagem_botao_carregar"
+        <TextView
+            android:id="@+id/perfil_user_sair"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Editar Foto"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="20dp"
+            android:text="Sair"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/perfil_user_profile"
             app:layout_constraintEnd_toEndOf="parent"
-            app:icon="@drawable/ic_action_refresh_icon"
-            app:layout_constraintTop_toBottomOf="@+id/activity_imagem_perfil"
-            app:layout_constraintBottom_toBottomOf="@+id/activity_imagem_perfil"/>
+            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintStart_toEndOf="@+id/activity_cadastro_imagem"
+            app:layout_constraintTop_toTopOf="@+id/perfil_user_opcoes"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/activity_perfil_user_nome"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/perfil_user_opcoes"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="Opcoes"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/activity_cadastro_imagem"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activity_imagem_botao_carregar"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_perfil_user_campo_nome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/nome"
-                android:inputType="none"
-                android:enabled="false"
-                android:focusable="false"
-                android:clickable="false"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/activity_perfil_user_email"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/perfil_user_profile"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:text="@string/perfil"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="@+id/perfil_user_opcoes"
+            app:layout_constraintEnd_toStartOf="@+id/perfil_user_sair"
+            app:layout_constraintHorizontal_bias="0.417"
+            app:layout_constraintStart_toEndOf="@+id/perfil_user_opcoes"
+            app:layout_constraintTop_toTopOf="@+id/perfil_user_opcoes"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/activity_cadastro_imagem"
+            android:layout_width="200dp"
+            android:layout_height="160dp"
+            android:contentDescription="@string/imagemupload"
+            android:scaleType="centerCrop"
+            android:src="@drawable/foto_default_perfil"
+            app:layout_constraintBottom_toBottomOf="@+id/background_perfil"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activity_perfil_user_nome"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.5" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_perfil_user_campo_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="none"
-                android:enabled="false"
-                android:focusable="false"
-                android:clickable="false"/>
+        <TextView
+            android:id="@+id/perfil_nome_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_cadastro_imagem"
+            tools:text="Raiany Rocha" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/perfil_bio_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/perfil_nome_user"
+            tools:text="A mantra goes here" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:compatShadowEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/button_navigation_cadastro_user" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
+

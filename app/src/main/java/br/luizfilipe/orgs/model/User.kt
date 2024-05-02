@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
+import java.util.concurrent.Flow
 
 @Entity
 @Parcelize
@@ -12,6 +13,7 @@ data class User(
     var nome: String,
     var email: String,
     var senha: String,
+    var telefone: String,
     var imagem: String? = null,
 ) : Parcelable {
     override fun toString(): String {

@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_gastos"
+        android:enabled="true"
+        android:icon="@drawable/ic_gastos"
+        android:title="Gastos"
+        />
+
+    <item
+        android:id="@+id/item_perfil"
+        android:enabled="true"
+        android:icon="@drawable/ic_perfil_pessoa"
+        android:title="@string/perfil"
+        />
+
+
+    <item
+        android:id="@+id/item_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/opcoes"
+        />
+
+    <item
+        android:id="@+id/item_sair"
+        android:icon="@drawable/ic_sair"
+        android:enabled="true"
+        android:title="@string/sair" />
+</menu>

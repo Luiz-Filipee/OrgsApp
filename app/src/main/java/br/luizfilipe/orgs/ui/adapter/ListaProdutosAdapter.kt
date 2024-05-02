@@ -10,6 +10,10 @@ import br.luizfilipe.orgs.databinding.ProdutoItemBinding
 import br.luizfilipe.orgs.extensions.formataParaMoedaBrasileira
 import br.luizfilipe.orgs.extensions.tentaCarregarImagem
 import br.luizfilipe.orgs.model.Produto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.util.Collections
 
 class ListaProdutosAdapter(
@@ -42,7 +46,7 @@ class ListaProdutosAdapter(
         notifyDataSetChanged()
     }
 
-    fun troca(positionInitial: Int, positionFinal: Int) {
+    suspend fun troca(positionInitial: Int, positionFinal: Int) {
         Collections.swap(produtos, positionInitial, positionFinal)
         notifyItemMoved(positionInitial, positionFinal)
         val dao = AppDataBase.getInstance(context).produtoDaoRoom()
@@ -55,7 +59,7 @@ class ListaProdutosAdapter(
         val produto = produtos.get(position)
         produtos.removeAt(position)
         notifyItemRemoved(position)
-        Thread {
+        MainScope().launch(Dispatchers.IO) {
             produtoDAORoom.remove(produto)
         }.start()
     }

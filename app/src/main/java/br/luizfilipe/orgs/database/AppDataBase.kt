@@ -11,7 +11,7 @@ import br.luizfilipe.orgs.database.dao.UserDAORoom
 import br.luizfilipe.orgs.model.Produto
 import br.luizfilipe.orgs.model.User
 
-@Database(entities = [Produto::class, User::class], version = 3)
+@Database(entities = [Produto::class, User::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase() {
 
@@ -19,22 +19,30 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun userDaoRoom(): UserDAORoom
 
 
-    companion object {
-        @Volatile
-        private lateinit var db: AppDataBase
-        fun getInstance(context: Context): AppDataBase {
-            if (::db.isInitialized) return db
+//    companion object {
+//        @Volatile
+//        private lateinit var db: AppDataBase
+//        fun getInstance(context: Context): AppDataBase {
+//            if (::db.isInitialized) return db
+//            return Room.databaseBuilder(
+//                context,
+//                AppDataBase::class.java,
+//                "br.luizfilipe.orgs"
+//            ).allowMainThreadQueries()
+//                .fallbackToDestructiveMigration()
+//                .build().also {
+//                    db = it
+//                }
+//        }
+//    }
+
+    companion object{
+        fun getInstance(context: Context) : AppDataBase{
             return Room.databaseBuilder(
                 context,
                 AppDataBase::class.java,
-                "br.luizfilipe.orgs"
-            ).allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build().also {
-                    db = it
-                }
+                "orgs.db"
+            ).build()
         }
     }
-
-
 }

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.activity.FormularioProdutoActivity">
+        tools:context=".ui.activity.produto.FormularioProdutoActivity">
 
         <ImageView
             android:id="@+id/activity_formulario_imagem"
@@ -88,13 +88,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/salvar"
+            style="@style/ShapeAppearance.Material3.Corner.Medium"
             android:textColorHint="@color/white"
             app:layout_constraintVertical_bias="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/formulario_produto_valor" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -4,17 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.ListaProdutosActivity">
+    tools:context=".ui.activity.produto.ListaProdutosActivity">
+
+
+    <EditText
+        android:id="@+id/lista_produto_Activity_pesquisa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:ems="12"
+        android:maxLines="1"
+        android:inputType="text"
+        android:hint="@string/pesquisa_na_lista"
+        android:background="@drawable/background_textview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/imagem_icon_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_pesquisa_dark"
+        app:layout_constraintTop_toTopOf="@+id/lista_produto_Activity_pesquisa"
+        app:layout_constraintEnd_toEndOf="@+id/lista_produto_Activity_pesquisa"
+        app:layout_constraintBottom_toBottomOf="@+id/lista_produto_Activity_pesquisa"/>
+
+    <TextView
+        android:id="@+id/lista_produto_Activity_filtros_ordena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:drawableEnd="@drawable/ic_filtro"
+        android:drawablePadding="5dp"
+        android:text="Filtrar"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/lista_produto_Activity_pesquisa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.868"
+        app:layout_constraintStart_toEndOf="@+id/lista_produto_Activity_pesquisa"
+        app:layout_constraintTop_toTopOf="@+id/lista_produto_Activity_pesquisa" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lista_produto_Activity_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lista_produto_Activity_pesquisa"
         tools:listitem="@layout/produto_item" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -23,13 +64,22 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:contentDescription="@string/novo_produto"
-        android:text="@string/novo_produto"
         app:icon="@drawable/ic_activity_add"
         app:backgroundTint="@color/colorPrimary"
         android:fontFamily="@font/montserrat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintHorizontal_bias="1" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/button_navigation_menu"
+        app:compatShadowEnabled="true"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
