@@ -1,98 +1,70 @@
-package br.luizfilipe.orgs.ui.activity
+package br.luizfilipe.orgs.ui.activity.user
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import br.luizfilipe.orgs.R
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityPerfilUserBinding
-import br.luizfilipe.orgs.model.User
+import br.luizfilipe.orgs.extensions.vaiPara
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_USER_ID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class PerfilUserActivity : Activity() {
-    private var idUser: Long = 0
-    private val userDAORoom by lazy {
+    private val userDao by lazy {
         val db = AppDataBase.getInstance(this)
         db.userDaoRoom()
     }
-    private var userId: Long = 0
 
     private val binding by lazy {
         ActivityPerfilUserBinding.inflate(layoutInflater)
     }
+    private var idUser: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         tentaCarregarUser()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        buscaUser()
+        menunavigation()
     }
 
     private fun tentaCarregarUser() {
-        idUser = intent.getLongExtra(CHAVE_USER_ID, 0L)
-    }
-
-    private fun buscaUser() {
-        val scope = MainScope()
-        scope.launch(Dispatchers.IO) {
-            userDAORoom.buscaPorId(idUser)?.let {
-                preencheCampos(it)
+        MainScope().launch(Dispatchers.IO) {
+            intent.getLongExtra(CHAVE_USER_ID, 0L).let { usuarioId ->
+                userDao.buscaPorId(usuarioId).collect { user ->
+                    binding.perfilNomeUser.setText(user.nome)
+                    binding.perfilBioUser.setText("Meu dia ta incrivel")
+                    idUser = user.id
+                }
             }
         }
     }
+
 
     private fun menunavigation() {
         val buttonNavigation = binding.bottomNavigation
         buttonNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.item_edita -> {
-                    abreTelaEditaUser()
+                    vaiPara(ActivtyEditaUser::class.java) {
+                        putExtra(CHAVE_USER_ID, idUser)
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.item_home -> {
-                    voltaPraListaActivity()
+                    finish()
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.item_logout -> {
-                    logoutConta()
+                    vaiPara(LoginActivity::class.java)
                     return@setOnNavigationItemSelectedListener true
                 }
-
 
                 else -> return@setOnNavigationItemSelectedListener false
             }
         }
     }
-
-    private fun abreTelaEditaUser(){
-        val intent = Intent(this, ActivtyEditaUser::class.java).apply {
-            putExtra(CHAVE_USER_ID, userId)
-        }
-        startActivity(intent)
-    }
-
-    private fun voltaPraListaActivity() {
-        startActivity(Intent(this, ListaProdutosActivity::class.java))
-    }
-
-    private fun logoutConta() {
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
-
-    private fun preencheCampos(user: User) {
-        binding.cadastroNomeUser
-            .setText(user.nome)
-        binding.cadastroDescricaoUser
-            .setText("")
-    }
-
 }
