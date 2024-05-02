@@ -3,13 +3,15 @@ package br.luizfilipe.orgs.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityLoginBinding
-import br.luizfilipe.orgs.model.User
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_USER_ID
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : Activity() {
     private val binding by lazy { // so e iniciada qunado acessada pela primeira vez
@@ -19,11 +21,15 @@ class LoginActivity : Activity() {
         val db = AppDataBase.getInstance(this)
         db.userDaoRoom()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         configuraBotaoLogin()
         configuraBotaoCadastro()
+        configuraBotaoEsqueceuSenha()
+        binding.activityLoginUserNome.setText("Q")
+        binding.activityLoginUserSenha.setText("q")
     }
 
     private fun configuraBotaoLogin() {
@@ -34,15 +40,28 @@ class LoginActivity : Activity() {
             val username = campoUsername.text.toString()
             val senha = campoSenha.text.toString()
             if (username.isNotEmpty() && senha.isNotEmpty()) {
-                val user = userDAORoom.validaUser(username, senha)
-                if (user != null) {
-                    val idUserEncontrado = user.id
-                    val intent = Intent(this, ListaProdutosActivity::class.java).apply {
-                        putExtra(CHAVE_USER_ID, idUserEncontrado)
+                val scope = CoroutineScope(Dispatchers.IO)
+                scope.launch {
+                    val user = userDAORoom.validaUser(username, senha)
+                    withContext(Dispatchers.Main) {
+                        if (user != null) {
+                            val idUserEncontrado = user.id
+                            val intent = Intent(
+                                this@LoginActivity,
+                                ListaProdutosActivity::class.java
+                            ).apply {
+                                putExtra(CHAVE_USER_ID, idUserEncontrado)
+                            }
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Usuario nao encontrado",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "Usuario nao encontrado", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(
@@ -57,6 +76,13 @@ class LoginActivity : Activity() {
         val buttonCadastro = binding.activityLoginCadastrarUser
         buttonCadastro.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this, CadastroUserActivity::class.java))
+        })
+    }
+
+    private fun configuraBotaoEsqueceuSenha(){
+        val buttonEsqueceuSenha = binding.activityLoginForgotPasswordUser
+        buttonEsqueceuSenha.setOnClickListener(View.OnClickListener {
+
         })
     }
 
