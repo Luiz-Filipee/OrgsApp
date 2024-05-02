@@ -1,5 +1,6 @@
 package br.luizfilipe.orgs.ui.activity.user
 
+import LoginActivity
 import android.app.Activity
 import android.os.Bundle
 import br.luizfilipe.orgs.R
