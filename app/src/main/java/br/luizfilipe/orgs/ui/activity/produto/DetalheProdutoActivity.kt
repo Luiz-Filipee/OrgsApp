@@ -60,7 +60,9 @@ class DetalheProdutoActivity : AppCompatActivity() {
             dataStore.data.collect { preferences ->
                 preferences[produtoCadastrado]?.let { produtoId ->
                     produtoDAORoom.buscaPorId(produtoId).collect { produto ->
-                        preencheCampos(produto)
+                        if (produto != null) {
+                            preencheCampos(produto)
+                        }
                     }
                 }
             }

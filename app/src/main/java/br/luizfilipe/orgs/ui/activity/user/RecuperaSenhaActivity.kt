@@ -7,11 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityForgotPasswordBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class ActivityForgotPassword : AppCompatActivity() {
+class RecuperaSenhaActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityForgotPasswordBinding.inflate(layoutInflater)
     }
@@ -35,12 +33,12 @@ class ActivityForgotPassword : AppCompatActivity() {
             lifecycleScope.launch {
                 userDao.buscaUserPorEmail(email)?.let { user ->
                     Toast.makeText(
-                        this@ActivityForgotPassword,
+                        this@RecuperaSenhaActivity,
                         "Foi enviado um link no seu email",
                         Toast.LENGTH_SHORT
                     ).show()
                 } ?: Toast.makeText(
-                    this@ActivityForgotPassword,
+                    this@RecuperaSenhaActivity,
                     "Usuario nao encontrado" ,
                     Toast.LENGTH_SHORT
                 ).show()

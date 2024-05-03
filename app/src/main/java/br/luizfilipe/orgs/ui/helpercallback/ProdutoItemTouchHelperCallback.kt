@@ -1,6 +1,5 @@
 package br.luizfilipe.orgs.ui.helpercallback
 
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter

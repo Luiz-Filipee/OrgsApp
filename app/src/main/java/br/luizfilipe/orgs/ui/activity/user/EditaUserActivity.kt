@@ -7,11 +7,9 @@ import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityEditaUserBinding
 import br.luizfilipe.orgs.preferences.dataStore
 import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class ActivtyEditaUser : AppCompatActivity() {
+class EditaUserActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityEditaUserBinding.inflate(layoutInflater)
     }
