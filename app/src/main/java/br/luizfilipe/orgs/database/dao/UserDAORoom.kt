@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDAORoom {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun salva(o: User)
+    suspend fun salva(o: User)
 
     @Delete
     fun remove(o: User)
@@ -27,7 +27,7 @@ interface UserDAORoom {
     fun buscaPorId(idUser: Long): Flow<User>
 
     @Query("SELECT * FROM user WHERE email = :username AND senha = :senha")
-    suspend fun validaUser(username :String, senha :String): User?
+    suspend fun autentica(username :String, senha :String): User?
 
     @Query("SELECT * FROM user WHERE email = :emailUser")
     suspend fun buscaUserPorEmail(emailUser :String): User?

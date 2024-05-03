@@ -7,10 +7,7 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
-@Entity(foreignKeys = [ForeignKey(entity = User::class,
-    parentColumns = ["id"],
-    childColumns = ["userForeignKey"],
-    onDelete = ForeignKey.CASCADE)])
+@Entity()
 @Parcelize
 data class Produto(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
@@ -18,7 +15,7 @@ data class Produto(
     var descricao: String,
     var valor: BigDecimal,
     var imagem: String? = null,
-    val userForeignKey: Long? = null
+    val usuarioId: Long? = null
 ): Parcelable{
 
 }

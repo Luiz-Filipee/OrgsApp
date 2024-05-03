@@ -1,21 +1,18 @@
 package br.luizfilipe.orgs.ui.activity.user
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityLoginBinding
 import br.luizfilipe.orgs.extensions.toHash
+import br.luizfilipe.orgs.extensions.toast
 import br.luizfilipe.orgs.extensions.vaiPara
 import br.luizfilipe.orgs.preferences.dataStore
 import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
 import br.luizfilipe.orgs.ui.activity.produto.ListaProdutosActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -32,28 +29,25 @@ class LoginActivity : AppCompatActivity() {
         configuraBotaoLogin()
         configuraBotaoCadastro()
         configuraBotaoEsqueceuSenha()
-        binding.activityLoginUserNome.setText("Q")
-        binding.activityLoginUserSenha.setText("q")
     }
 
     private fun configuraBotaoLogin() {
         binding.activityLoginButton.setOnClickListener {
             val usuario = binding.activityLoginUserNome.text.toString()
             val senha = binding.activityLoginUserSenha.text.toString().toHash()
-            lifecycleScope.launch {
-                userDAO.validaUser(usuario, senha)?.let { usuario ->
-                    dataStore.edit { preferences ->
-                        Log.i("ListaProdutos", "configuraBotaoLogin: $usuario")
-                        preferences[usuarioLogadoPreferences] = usuario.id
-                    }
-                    vaiPara(ListaProdutosActivity::class.java)
-                    finish()
-                } ?: Toast.makeText(
-                    this@LoginActivity,
-                    "Falha na autenticacao",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            autentica(usuario, senha)
+        }
+    }
+
+    private fun autentica(usuario: String, senha: String) {
+        lifecycleScope.launch {
+            userDAO.autentica(usuario, senha)?.let { usuario ->
+                dataStore.edit { preferences ->
+                    preferences[usuarioLogadoPreferences] = usuario.id
+                }
+                vaiPara(ListaProdutosActivity::class.java)
+                finish()
+            } ?: toast("Falha na autenticação")
         }
     }
 
@@ -65,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun configuraBotaoEsqueceuSenha() {
         binding.activityLoginForgotPasswordUser.setOnClickListener(View.OnClickListener {
-            vaiPara(ActivityForgotPassword::class.java)
+            vaiPara(RecuperaSenhaActivity::class.java)
         })
     }
 }

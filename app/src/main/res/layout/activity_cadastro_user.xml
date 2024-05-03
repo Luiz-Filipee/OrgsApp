@@ -125,7 +125,7 @@
             android:id="@+id/cadastro_user_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gostaria de receber sua newsletter e outras informações promocionais."
+            android:text="Eu concordo com os termos de uso do aplicativo"
             app:layout_constraintTop_toBottomOf="@+id/cadastro_user_senha"
             app:layout_constraintStart_toStartOf="@+id/cadastro_user_telefone"
             app:layout_constraintEnd_toEndOf="parent"
