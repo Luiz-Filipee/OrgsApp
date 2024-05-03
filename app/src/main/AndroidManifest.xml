@@ -16,9 +16,9 @@
         tools:targetApi="31">
         <activity android:name=".ui.activity.user.LoginActivity"
             android:theme="@style/Theme.Orgs.NoActionBar"/>
-        <activity android:name=".ui.activity.user.ActivityForgotPassword"
+        <activity android:name=".ui.activity.user.RecuperaSenhaActivity"
             android:theme="@style/Theme.Orgs.NoActionBar"/>
-        <activity android:name=".ui.activity.user.ActivtyEditaUser"
+        <activity android:name=".ui.activity.user.EditaUserActivity"
             android:theme="@style/Theme.Orgs.NoActionBar"/>
         <activity android:name=".ui.activity.user.CadastroUserActivity"
             android:theme="@style/Theme.Orgs.NoActionBar"/>
