@@ -20,10 +20,13 @@ class ListaProdutosAdapter(
     produtos: List<Produto> = emptyList(),
     private val context: Context,
     var quandoClicaNoItem: (produto: Produto) -> Unit = {},
-    private val produtoDAORoom: ProdutoDAORoom
 ) : RecyclerView.Adapter<ListaProdutosAdapter.ProdutoViewHolder>() {
 
     private val produtos = produtos.toMutableList()
+
+    private val produtoDAORoom by lazy {
+        AppDataBase.getInstance(context).produtoDaoRoom()
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

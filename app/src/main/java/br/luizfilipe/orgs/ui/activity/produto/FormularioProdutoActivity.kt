@@ -1,100 +1,104 @@
 package br.luizfilipe.orgs.ui.activity.produto
 
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import br.luizfilipe.orgs.database.AppDataBase
+import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
 import br.luizfilipe.orgs.databinding.ActivityFormularioProdutoBinding
 import br.luizfilipe.orgs.extensions.tentaCarregarImagem
 import br.luizfilipe.orgs.model.Produto
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities
+import br.luizfilipe.orgs.ui.activity.UsuarioBaseActivity
 import br.luizfilipe.orgs.ui.dialog.FormularioImagemDialog
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
-class FormularioProdutoActivity : AppCompatActivity() {
-    private val CADASTRAR_PRODUTO = "Cadastrar Produto"
+class FormularioProdutoActivity : UsuarioBaseActivity() {
+
     private val binding by lazy {
         ActivityFormularioProdutoBinding.inflate(layoutInflater)
     }
-    private val produtoDAO by lazy {
+    private var url: String? = null
+    private var produtoId = 0L
+    private val produtoDao: ProdutoDAORoom by lazy {
         val db = AppDataBase.getInstance(this)
         db.produtoDaoRoom()
     }
-    private var url: String? = null
-    private var idProduto = 0L
-    private var idUser = 0L
-    private val scope = CoroutineScope(Dispatchers.IO)
+    private val usuarioDao by lazy {
+        AppDataBase.getInstance(this).userDaoRoom()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        title = CADASTRAR_PRODUTO
+        title = "Cadastrar produto"
         configuraBotaoSalvar()
-        configuraBotaoCarregarImagem()
+        binding.activityFormularioImagem.setOnClickListener {
+            FormularioImagemDialog(this)
+                .mostra(url) { imagem ->
+                    url = imagem
+                    binding.activityFormularioImagem.tentaCarregarImagem(url)
+                }
+        }
         tentaCarregarProduto()
-        tentaCarregarUser()
+        lifecycleScope.launch {
+            usuario
+                .filterNotNull()
+                .collect {
+                    Log.i("FormularioProduto", "onCreate: $it")
+                }
+        }
     }
 
     private fun tentaCarregarProduto() {
-        idProduto = intent.getLongExtra(ConstanteActivities.CHAVE_PRODUTO_ID, 0L)
+        produtoId = intent.getLongExtra(ConstanteActivities.CHAVE_PRODUTO_ID, 0L)
     }
 
     override fun onResume() {
         super.onResume()
-        tentaBuscar()
+        tentaBuscarProduto()
     }
 
-    private fun tentaCarregarUser() {
-        idUser = intent.getLongExtra(ConstanteActivities.CHAVE_USER_ID, 0L)
-    }
-
-    private fun tentaBuscar() {
+    private fun tentaBuscarProduto() {
         lifecycleScope.launch {
-            produtoDAO.buscaPorId(idProduto).collect { produto ->
-                withContext(Dispatchers.Main) {
+            produtoDao.buscaPorId(produtoId).collect {
+                it?.let { produtoEncontrado ->
                     title = "Alterar produto"
-                    preencheCampos(produto)
+                    preencheCampos(produtoEncontrado)
                 }
             }
         }
     }
 
-    private fun preencheCampos(produtoCarregado: Produto) {
-        url = produtoCarregado.imagem
-        binding.activityFormularioImagem.tentaCarregarImagem(produtoCarregado.imagem)
+    private fun preencheCampos(produto: Produto) {
+        url = produto.imagem
+        binding.activityFormularioImagem
+            .tentaCarregarImagem(produto.imagem)
         binding.activityFormularioProdutoNome
-            .setText(produtoCarregado.nome)
+            .setText(produto.nome)
         binding.activityFormularioProdutoDescricao
-            .setText(produtoCarregado.descricao)
-        binding.activityFormularioProdutoValor.setText(produtoCarregado.valor.toPlainString())
+            .setText(produto.descricao)
+        binding.activityFormularioProdutoValor
+            .setText(produto.valor.toPlainString())
     }
 
-    private fun configuraBotaoCarregarImagem() {
-        binding.activityFormularioImagem.setOnClickListener {
-            FormularioImagemDialog(this).mostra(url) { imagem ->
-                url = imagem
-                binding.activityFormularioImagem.tentaCarregarImagem(url)
+    private fun configuraBotaoSalvar() {
+        val botaoSalvar = binding.activityFormularioButton
+
+        botaoSalvar.setOnClickListener {
+            lifecycleScope.launch {
+                usuario.value?.let { usuario ->
+                    val produtoNovo = criaProduto(usuario.id)
+                    produtoDao.salva(produtoNovo)
+                    finish()
+                }
             }
         }
     }
 
-    private fun configuraBotaoSalvar() {
-        val button = binding.activityFormularioButton
-        button.setOnClickListener(View.OnClickListener {
-            val produtoNovo = criaProduto()
-            scope.launch {
-                produtoDAO.salva(produtoNovo) // salvando ou editando por meio do insert
-                finish()
-            }
-        })
-    }
-
-
-    private fun criaProduto(): Produto {
+    private fun criaProduto(usuarioId: Long): Produto {
         val campoNome = binding.activityFormularioProdutoNome
         val nome = campoNome.text.toString()
         val campoDescricao = binding.activityFormularioProdutoDescricao
@@ -108,13 +112,13 @@ class FormularioProdutoActivity : AppCompatActivity() {
         }
 
         return Produto(
-            id = idProduto,
+            id = produtoId,
             nome = nome,
             descricao = descricao,
             valor = valor,
-            imagem = url
+            imagem = url,
+            usuarioId = usuarioId
         )
     }
-
 
 }
