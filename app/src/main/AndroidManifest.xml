@@ -14,16 +14,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Orgs"
         tools:targetApi="31">
-        <activity android:name=".ui.activity.user.LoginActivity"
-            android:theme="@style/Theme.Orgs.NoActionBar"/>
-        <activity android:name=".ui.activity.user.RecuperaSenhaActivity"
-            android:theme="@style/Theme.Orgs.NoActionBar"/>
-        <activity android:name=".ui.activity.user.EditaUserActivity"
-            android:theme="@style/Theme.Orgs.NoActionBar"/>
-        <activity android:name=".ui.activity.user.CadastroUserActivity"
-            android:theme="@style/Theme.Orgs.NoActionBar"/>
-        <activity android:name=".ui.activity.user.PerfilUserActivity"
-            android:theme="@style/Theme.Orgs.NoActionBar"/>
+        <activity
+            android:name=".ui.activity.produto.GastosProdutosActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar" />
+        <activity
+            android:name=".ui.activity.user.LoginActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar" />
+        <activity
+            android:name=".ui.activity.user.RecuperaSenhaActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar" />
+        <activity
+            android:name=".ui.activity.user.EditaUserActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar" />
+        <activity
+            android:name=".ui.activity.user.CadastroUserActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar" />
+        <activity
+            android:name=".ui.activity.user.PerfilUserActivity"
+            android:theme="@style/Theme.Orgs.NoActionBar" />
         <activity
             android:name=".ui.activity.SplashScreen"
             android:exported="true">
