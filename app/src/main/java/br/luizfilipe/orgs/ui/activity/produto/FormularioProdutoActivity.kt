@@ -8,9 +8,13 @@ import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
 import br.luizfilipe.orgs.databinding.ActivityFormularioProdutoBinding
 import br.luizfilipe.orgs.extensions.tentaCarregarImagem
 import br.luizfilipe.orgs.model.Produto
+import br.luizfilipe.orgs.preferences.dataStore
+import br.luizfilipe.orgs.preferences.produtoCadastrado
+import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities
 import br.luizfilipe.orgs.ui.activity.UsuarioBaseActivity
 import br.luizfilipe.orgs.ui.dialog.FormularioImagemDialog
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -25,9 +29,6 @@ class FormularioProdutoActivity : UsuarioBaseActivity() {
     private val produtoDao: ProdutoDAORoom by lazy {
         val db = AppDataBase.getInstance(this)
         db.produtoDaoRoom()
-    }
-    private val usuarioDao by lazy {
-        AppDataBase.getInstance(this).userDaoRoom()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,7 @@ class FormularioProdutoActivity : UsuarioBaseActivity() {
                     Log.i("FormularioProduto", "onCreate: $it")
                 }
         }
+
     }
 
     private fun tentaCarregarProduto() {
@@ -65,7 +67,7 @@ class FormularioProdutoActivity : UsuarioBaseActivity() {
         lifecycleScope.launch {
             produtoDao.buscaPorId(produtoId).collect {
                 it?.let { produtoEncontrado ->
-                    title = "Alterar produto"
+                    title = "Alterar Produto"
                     preencheCampos(produtoEncontrado)
                 }
             }
