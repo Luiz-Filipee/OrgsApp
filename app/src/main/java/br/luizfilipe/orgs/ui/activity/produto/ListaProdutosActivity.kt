@@ -18,11 +18,13 @@ import br.luizfilipe.orgs.model.Produto
 import br.luizfilipe.orgs.preferences.dataStore
 import br.luizfilipe.orgs.preferences.produtoCadastrado
 import br.luizfilipe.orgs.ui.activity.ConstanteActivities
+import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_PRODUTO_ID
 import br.luizfilipe.orgs.ui.activity.UsuarioBaseActivity
 import br.luizfilipe.orgs.ui.activity.user.CadastroUserActivity
 import br.luizfilipe.orgs.ui.activity.user.PerfilUserActivity
 import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
 import br.luizfilipe.orgs.ui.helpercallback.ProdutoItemTouchHelperCallback
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
@@ -50,16 +52,15 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
             launch {
                 usuario
                     .filterNotNull()
-                    .collect {
-                        Log.i("ListaProdutos", "onCreate: $it")
-                        buscaProdutosUsuario()
+                    .collect { usuario ->
+                        buscaProdutosUsuario(usuario.id)
                     }
             }
         }
     }
 
-    private suspend fun buscaProdutosUsuario() {
-        produtoDao.buscaTodos().collect { produtos ->
+    private suspend fun buscaProdutosUsuario(usuarioId: Long) {
+        produtoDao.buscaTodosDoUsuario(usuarioId).collect { produtos ->
             adapter.atualiza(produtos)
         }
     }
@@ -76,7 +77,7 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
     }
 
     private suspend fun buscaProdutoLista(termoPesquisa: String) {
-        produtoDao.buscaPorNome(termoPesquisa.lowercase())?.let {
+        produtoDao.buscaPorNome(termoPesquisa).collect {
             vaiPara(DetalheProdutoActivity::class.java)
         }
     }
@@ -85,18 +86,15 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
         val recyclerView = binding.listaProdutoActivityRecyclerview
         recyclerView.adapter = adapter
         adapter.quandoClicaNoItem = { produto ->
-            lifecycleScope.launch {
-                enviaProduto(produto)
-            }
+                val intent = Intent(
+                    this,
+                    DetalheProdutoActivity::class.java
+                ).apply {
+                    putExtra(CHAVE_PRODUTO_ID, produto.id)
+                }
+                startActivity(intent)
         }
         congiguraItemTouchHelper(recyclerView)
-    }
-
-    private suspend fun enviaProduto(produto: Produto) {
-        dataStore.edit { preferences ->
-            preferences[produtoCadastrado] = produto.id
-        }
-        vaiPara(DetalheProdutoActivity::class.java)
     }
 
     private fun abreMenuOrdena() {
@@ -127,6 +125,7 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
         botoesMenuNavegacao.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.item_gastos -> {
+                    vaiPara(GastosProdutosActivity::class.java)
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -160,7 +159,6 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
     private fun configuraFab() {
         binding.extendedFab.setOnClickListener(View.OnClickListener {
             vaiParaFormularioProduto()
-            Log.i("botao", "configuraFab: clicou")
         })
     }
 

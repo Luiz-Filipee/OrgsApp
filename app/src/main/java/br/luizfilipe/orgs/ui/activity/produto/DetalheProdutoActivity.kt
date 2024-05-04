@@ -1,5 +1,6 @@
 package br.luizfilipe.orgs.ui.activity.produto
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,10 +15,12 @@ import br.luizfilipe.orgs.extensions.vaiPara
 import br.luizfilipe.orgs.model.Produto
 import br.luizfilipe.orgs.preferences.dataStore
 import br.luizfilipe.orgs.preferences.produtoCadastrado
+import br.luizfilipe.orgs.ui.activity.ConstanteActivities
 import kotlinx.coroutines.launch
 
 class DetalheProdutoActivity : AppCompatActivity() {
     private var produto: Produto? = null
+    private var produtoId: Long = 0L
     private val binding by lazy {
         ActivityDetalheProdutoBinding.inflate(layoutInflater)
     }
@@ -31,40 +34,49 @@ class DetalheProdutoActivity : AppCompatActivity() {
         tentaCarregarProduto()
     }
 
+    override fun onResume() {
+        super.onResume()
+        buscaProduto()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_edita_nota, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val db = AppDataBase.getInstance(this).produtoDaoRoom()
         when (item.itemId) {
             R.id.edit -> {
-                vaiPara(FormularioProdutoActivity::class.java)
+                Intent(this, FormularioProdutoActivity::class.java).apply {
+                    putExtra(ConstanteActivities.CHAVE_PRODUTO_ID, produtoId)
+                    startActivity(this)
+                }
             }
 
             R.id.remove -> {
-                lifecycleScope.launch {
-                    produto?.let {
-                        db.remove(it)
-                    }
-                    finish()
-                }
+               produto?.let {
+                   lifecycleScope.launch {
+                       produtoDAORoom.remove(it)
+                       finish()
+                   }
+               }
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun tentaCarregarProduto() {
+        produtoId = intent.getLongExtra(ConstanteActivities.CHAVE_PRODUTO_ID, 0L)
+    }
+
+
+    private fun buscaProduto() {
         lifecycleScope.launch {
-            dataStore.data.collect { preferences ->
-                preferences[produtoCadastrado]?.let { produtoId ->
-                    produtoDAORoom.buscaPorId(produtoId).collect { produto ->
-                        if (produto != null) {
-                            preencheCampos(produto)
-                        }
-                    }
-                }
+            produtoDAORoom.buscaPorId(produtoId).collect { produtoEncontrado ->
+                produto = produtoEncontrado
+                produto?.let {
+                    preencheCampos(it)
+                } ?: finish()
             }
         }
     }
