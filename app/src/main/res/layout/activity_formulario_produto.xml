@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.activity.produto.FormularioProdutoActivity">
+        tools:context=".view.activity.produto.FormularioProdutoActivity">
 
         <ImageView
             android:id="@+id/activity_formulario_imagem"
