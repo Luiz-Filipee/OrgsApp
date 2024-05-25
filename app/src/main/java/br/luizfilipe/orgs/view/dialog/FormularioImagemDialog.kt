@@ -1,4 +1,4 @@
-package br.luizfilipe.orgs.ui.dialog
+package br.luizfilipe.orgs.view.dialog
 
 import android.content.Context
 import android.view.LayoutInflater

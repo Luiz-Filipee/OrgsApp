@@ -1,43 +1,42 @@
-package br.luizfilipe.orgs.ui.activity.produto
+package br.luizfilipe.orgs.view.activity.produto
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.PopupMenu
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import br.luizfilipe.orgs.R
-import br.luizfilipe.orgs.database.AppDataBase
+import br.luizfilipe.orgs.data.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityListaProdutoBinding
 import br.luizfilipe.orgs.extensions.vaiPara
-import br.luizfilipe.orgs.model.Produto
-import br.luizfilipe.orgs.preferences.dataStore
-import br.luizfilipe.orgs.preferences.produtoCadastrado
-import br.luizfilipe.orgs.ui.activity.ConstanteActivities
-import br.luizfilipe.orgs.ui.activity.ConstanteActivities.Companion.CHAVE_PRODUTO_ID
-import br.luizfilipe.orgs.ui.activity.UsuarioBaseActivity
-import br.luizfilipe.orgs.ui.activity.user.CadastroUserActivity
-import br.luizfilipe.orgs.ui.activity.user.PerfilUserActivity
-import br.luizfilipe.orgs.ui.adapter.ListaProdutosAdapter
-import br.luizfilipe.orgs.ui.helpercallback.ProdutoItemTouchHelperCallback
-import kotlinx.coroutines.flow.collect
+import br.luizfilipe.orgs.view.activity.ConstanteActivities
+import br.luizfilipe.orgs.view.activity.ConstanteActivities.Companion.CHAVE_PRODUTO_ID
+import br.luizfilipe.orgs.view.activity.UsuarioBaseActivity
+import br.luizfilipe.orgs.view.activity.user.CadastroUserActivity
+import br.luizfilipe.orgs.view.activity.user.OptionsUserActivity
+import br.luizfilipe.orgs.view.activity.user.PerfilUserActivity
+import br.luizfilipe.orgs.view.adapter.ListaProdutosAdapter
+import br.luizfilipe.orgs.view.helpercallback.ProdutoItemTouchHelperCallback
+import br.luizfilipe.orgs.viewmodel.ProdutoViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListaProdutosActivity : UsuarioBaseActivity() {
 
-    private val adapter = ListaProdutosAdapter(context = this)
+//    private val adapter = ListaProdutosAdapter(context = this)
+
+    private val adapter: ListaProdutosAdapter by inject()
+
     private val binding by lazy { // so e iniciada qunado acessada pela primeira vez
         ActivityListaProdutoBinding.inflate(layoutInflater) // inflando o layout associado a essa activity
     }
-    private val produtoDao by lazy {
-        val db = AppDataBase.getInstance(this)
-        db.produtoDaoRoom()
-    }
+
+    private val produtoViewModel: ProdutoViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +59,7 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
     }
 
     private suspend fun buscaProdutosUsuario(usuarioId: Long) {
-        produtoDao.buscaTodosDoUsuario(usuarioId).collect { produtos ->
+        produtoViewModel.buscaTodosDoUsuario(usuarioId).collect { produtos ->
             adapter.atualiza(produtos)
         }
     }
@@ -77,7 +76,7 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
     }
 
     private suspend fun buscaProdutoLista(termoPesquisa: String) {
-        produtoDao.buscaPorNome(termoPesquisa).collect {
+        produtoViewModel.buscaPorNome(termoPesquisa).collect {
             vaiPara(DetalheProdutoActivity::class.java)
         }
     }
@@ -86,13 +85,13 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
         val recyclerView = binding.listaProdutoActivityRecyclerview
         recyclerView.adapter = adapter
         adapter.quandoClicaNoItem = { produto ->
-                val intent = Intent(
-                    this,
-                    DetalheProdutoActivity::class.java
-                ).apply {
-                    putExtra(CHAVE_PRODUTO_ID, produto.id)
-                }
-                startActivity(intent)
+            val intent = Intent(
+                this,
+                DetalheProdutoActivity::class.java
+            ).apply {
+                putExtra(CHAVE_PRODUTO_ID, produto.id)
+            }
+            startActivity(intent)
         }
         congiguraItemTouchHelper(recyclerView)
     }
@@ -105,8 +104,8 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 lifecycleScope.launch {
                     val produtosOrdenados = when (menuItem.itemId) {
-                        R.id.valor_asc -> produtoDao.buscaTodosOrdenaPorValorDesc()
-                        R.id.valor_desc -> produtoDao.buscaTodosOrdenaPorValorAsc()
+                        R.id.valor_asc -> produtoViewModel.buscaTodosOrdenaPorValorDesc()
+                        R.id.valor_desc -> produtoViewModel.buscaTodosOrdenaPorValorAsc()
                         else -> emptyList()
                     }
                     if (produtosOrdenados != null) {
@@ -135,7 +134,7 @@ class ListaProdutosActivity : UsuarioBaseActivity() {
                 }
 
                 R.id.item_settings -> {
-                    vaiPara(CadastroUserActivity::class.java)
+                    vaiPara(OptionsUserActivity::class.java)
                     return@setOnNavigationItemSelectedListener true
                 }
 

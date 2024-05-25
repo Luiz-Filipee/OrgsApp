@@ -1,22 +1,18 @@
-package br.luizfilipe.orgs.ui.activity.produto
+package br.luizfilipe.orgs.view.activity.produto
 
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
-import br.luizfilipe.orgs.database.AppDataBase
-import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
+import br.luizfilipe.orgs.data.model.Produto
 import br.luizfilipe.orgs.databinding.ActivityFormularioProdutoBinding
 import br.luizfilipe.orgs.extensions.tentaCarregarImagem
-import br.luizfilipe.orgs.model.Produto
-import br.luizfilipe.orgs.preferences.dataStore
-import br.luizfilipe.orgs.preferences.produtoCadastrado
-import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
-import br.luizfilipe.orgs.ui.activity.ConstanteActivities
-import br.luizfilipe.orgs.ui.activity.UsuarioBaseActivity
-import br.luizfilipe.orgs.ui.dialog.FormularioImagemDialog
-import kotlinx.coroutines.flow.collect
+import br.luizfilipe.orgs.view.activity.ConstanteActivities
+import br.luizfilipe.orgs.view.activity.UsuarioBaseActivity
+import br.luizfilipe.orgs.view.dialog.FormularioImagemDialog
+import br.luizfilipe.orgs.viewmodel.ProdutoViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 
 class FormularioProdutoActivity : UsuarioBaseActivity() {
@@ -26,10 +22,8 @@ class FormularioProdutoActivity : UsuarioBaseActivity() {
     }
     private var url: String? = null
     private var produtoId = 0L
-    private val produtoDao: ProdutoDAORoom by lazy {
-        val db = AppDataBase.getInstance(this)
-        db.produtoDaoRoom()
-    }
+
+    private val produtoViewModel: ProdutoViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +59,12 @@ class FormularioProdutoActivity : UsuarioBaseActivity() {
 
     private fun tentaBuscarProduto() {
         lifecycleScope.launch {
-            produtoDao.buscaPorId(produtoId).collect {
-                it?.let { produtoEncontrado ->
-                    title = "Alterar Produto"
-                    preencheCampos(produtoEncontrado)
-                }
-            }
+//            produtoDao.buscaPorId(produtoId).collect {
+//                it?.let { produtoEncontrado ->
+//                    title = "Alterar Produto"
+//                    preencheCampos(produtoEncontrado)
+//                }
+//            }
         }
     }
 
@@ -93,8 +87,10 @@ class FormularioProdutoActivity : UsuarioBaseActivity() {
             lifecycleScope.launch {
                 usuario.value?.let { usuario ->
                     val produtoNovo = criaProduto(usuario.id)
-                    produtoDao.salva(produtoNovo)
-                    finish()
+                    if (produtoNovo.valorEhValido) {
+                        produtoViewModel.salva(produtoNovo)
+                        finish()
+                    }
                 }
             }
         }

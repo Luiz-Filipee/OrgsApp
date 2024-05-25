@@ -1,32 +1,32 @@
-package br.luizfilipe.orgs.ui.adapter
+package br.luizfilipe.orgs.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.luizfilipe.orgs.database.AppDataBase
-import br.luizfilipe.orgs.database.dao.ProdutoDAORoom
+import br.luizfilipe.orgs.data.database.AppDataBase
+import br.luizfilipe.orgs.data.database.dao.LocalProdutoDataSource
+import br.luizfilipe.orgs.data.model.Produto
 import br.luizfilipe.orgs.databinding.ProdutoItemBinding
 import br.luizfilipe.orgs.extensions.formataParaMoedaBrasileira
 import br.luizfilipe.orgs.extensions.tentaCarregarImagem
-import br.luizfilipe.orgs.model.Produto
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.java.KoinJavaComponent.inject
 import java.util.Collections
 
 class ListaProdutosAdapter(
     produtos: List<Produto> = emptyList(),
     private val context: Context,
     var quandoClicaNoItem: (produto: Produto) -> Unit = {},
-) : RecyclerView.Adapter<ListaProdutosAdapter.ProdutoViewHolder>() {
+) : RecyclerView.Adapter<ListaProdutosAdapter.ProdutoViewHolder>(), KoinComponent {
 
     private val produtos = produtos.toMutableList()
 
-    private val produtoDAORoom by lazy {
-        AppDataBase.getInstance(context).produtoDaoRoom()
-    }
+    private val localProdutoDataSource: LocalProdutoDataSource by inject()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -52,9 +52,8 @@ class ListaProdutosAdapter(
     suspend fun troca(positionInitial: Int, positionFinal: Int) {
         Collections.swap(produtos, positionInitial, positionFinal)
         notifyItemMoved(positionInitial, positionFinal)
-        val dao = AppDataBase.getInstance(context).produtoDaoRoom()
         for (produto in produtos) {
-            dao.upadate(produto)
+            localProdutoDataSource.update(produto)
         }
     }
 
@@ -62,8 +61,8 @@ class ListaProdutosAdapter(
         val produto = produtos.get(position)
         produtos.removeAt(position)
         notifyItemRemoved(position)
-        MainScope().launch(Dispatchers.IO) {
-            produtoDAORoom.remove(produto)
+        GlobalScope.launch(Dispatchers.IO) {
+            localProdutoDataSource.remove(produto)
         }.start()
     }
 

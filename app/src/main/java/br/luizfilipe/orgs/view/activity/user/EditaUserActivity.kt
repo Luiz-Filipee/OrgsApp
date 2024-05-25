@@ -1,22 +1,23 @@
-package br.luizfilipe.orgs.ui.activity.user
+package br.luizfilipe.orgs.view.activity.user
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import br.luizfilipe.orgs.database.AppDataBase
+import br.luizfilipe.orgs.data.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityEditaUserBinding
 import br.luizfilipe.orgs.preferences.dataStore
 import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
+import br.luizfilipe.orgs.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditaUserActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityEditaUserBinding.inflate(layoutInflater)
     }
-    private val userDao by lazy {
-        val db = AppDataBase.getInstance(this)
-        db.userDaoRoom()
-    }
+
+    private val userViewModel: UserViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -27,7 +28,7 @@ class EditaUserActivity : AppCompatActivity() {
         lifecycleScope.launch {
             dataStore.data.collect { preferences ->
                 preferences[usuarioLogadoPreferences]?.let { usuarioId ->
-                    userDao.buscaPorId(usuarioId).collect { user ->
+                    userViewModel.buscaPorId(usuarioId).collect { user ->
                         binding.activityEditaUserCampoNome.setText(user.nome)
                         binding.activityEditaUserCampoEmail.setText(user.email)
                     }
