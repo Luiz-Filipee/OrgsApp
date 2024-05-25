@@ -1,5 +1,6 @@
 package br.luizfilipe.orgs.data.database.repository
 
+import android.util.Log
 import br.luizfilipe.orgs.data.database.dao.LocalProdutoDataSource
 import br.luizfilipe.orgs.data.model.Produto
 import br.luizfilipe.orgs.di.modules.repositoriesTestModules
@@ -10,8 +11,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldBeTrue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +20,6 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 import java.math.BigDecimal
 import kotlin.test.assertEquals
-import org.amshove.kluent.shouldBeTrue
 import kotlin.test.assertTrue
 
 
@@ -126,6 +124,42 @@ class ProdutoRepositoryImpTest : KoinTest {
             // Asert
             assertTrue(produtoEncontrado != null)
 
+        }
+    }
+
+    @Test
+    fun deveRetornarOValorTotalDeTodosOsProdutos() {
+        runBlocking {
+            val produto1 = Produto(
+                nome = "produto1",
+                descricao = "descricao do produto teste",
+                valor = BigDecimal(10.0),
+                imagem = null,
+                usuarioId = 1L
+            )
+            val produto2 = Produto(
+                nome = "produto2",
+                descricao = "descricao do produto teste",
+                valor = BigDecimal(20.0),
+                imagem = null,
+                usuarioId = 1L
+            )
+
+            // Act
+            val job1 = launch {
+                localProdutoDataSource.salva(produto1)
+            }
+            val job2 = launch {
+                localProdutoDataSource.salva(produto2)
+            }
+            job1.join()
+            job2.join()
+
+            delay(100)
+
+            val valorTotal = localProdutoDataSource.somaTodosValores(1L)
+
+            assertEquals(30.0, valorTotal)
         }
     }
 
