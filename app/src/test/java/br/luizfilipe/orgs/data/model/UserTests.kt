@@ -1,50 +1,50 @@
 package br.luizfilipe.orgs.data.model
 
-import org.junit.Assert.*
-
+import org.amshove.kluent.shouldBeFalse
+import org.amshove.kluent.shouldBeTrue
 import org.junit.Test
 
 class UserTests {
 
     @Test
     fun `deve retornar true se email e senha forem validos`() {
-        val usuarioValido = User(
+        val userValid = User(
             nome = "luiz",
             email = "luizkato@gmail.com",
             senha = "Cimento789@",
             telefone = "6765756756"
         )
 
-        val result = usuarioValido.ehValido
+        val emailAndPasswordIsValid = userValid.ehValido
 
-        assertTrue(result)
+        emailAndPasswordIsValid.shouldBeTrue()
     }
 
     @Test
-    fun `deve retornar false se email for invalido`(){
-        val usuarioInvalido = User(
+    fun `deve retornar false se email for invalido`() {
+        val userInvalid = User(
             nome = "luiz",
             email = "luizkatogmail.com",
             senha = "Cimento789@",
             telefone = "6765756756"
         )
 
-        val result = usuarioInvalido.ehValido
+        val emailIsInvalid = userInvalid.ehValido
 
-        assertFalse(result)
+        emailIsInvalid.shouldBeFalse()
     }
 
     @Test
-    fun `deve retornar false se senha for invalido`(){
-        val usuarioInvalido = User(
+    fun `deve retornar false se senha for invalido`() {
+        val userInvalid = User(
             nome = "luiz",
             email = "luizkatogmail.com",
             senha = "12345",
             telefone = "6765756756"
         )
 
-        val result = usuarioInvalido.ehValido
+        val passwordIsInvalid = userInvalid.ehValido
 
-        assertFalse(result)
+        passwordIsInvalid.shouldBeFalse()
     }
 }
