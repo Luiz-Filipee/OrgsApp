@@ -16,6 +16,7 @@ class ProdutoRepositoryImp(
         try {
 
             localProdutoDataSource.salva(produto)
+            Log.i(TAG, "salva: produto salvo")
 
         } catch (e: Exception) {
 
@@ -28,6 +29,8 @@ class ProdutoRepositoryImp(
         try {
 
             localProdutoDataSource.remove(produto)
+            Log.i(TAG, "salva: produto removido")
+
 
         } catch (e: Exception) {
 
