@@ -1,7 +1,7 @@
 package br.luizfilipe.orgs.data.model
 
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.amshove.kluent.shouldBeFalse
+import org.amshove.kluent.shouldBeTrue
 import org.junit.Test
 import java.math.BigDecimal
 
@@ -18,8 +18,7 @@ class ProdutoTests {
 
         val valorValido = produtoValido.valorEhValido
 
-        valorValido
-        assertTrue(valorValido)
+        valorValido.shouldBeTrue()
     }
 
     @Test
@@ -35,7 +34,7 @@ class ProdutoTests {
         val valorValido = produto.valorEhValido
 
         // Asert - afirme
-        assertFalse(valorValido)
+        valorValido.shouldBeFalse()
     }
 
     @Test
@@ -57,8 +56,8 @@ class ProdutoTests {
         val valorMenorQueZeroEhValido = produtoComValorIgualAZero.valorEhValido
 
         // Asert - afirme
-        assertFalse(valoIgualAZeroEhValido)
-        assertFalse(valorMenorQueZeroEhValido)
+        valoIgualAZeroEhValido.shouldBeFalse()
+        valorMenorQueZeroEhValido.shouldBeFalse()
     }
 
 }

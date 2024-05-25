@@ -1,22 +1,21 @@
-package br.luizfilipe.orgs.ui.activity.user
+package br.luizfilipe.orgs.view.activity.user
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import br.luizfilipe.orgs.R
-import br.luizfilipe.orgs.database.AppDataBase
 import br.luizfilipe.orgs.databinding.ActivityPerfilUserBinding
 import br.luizfilipe.orgs.extensions.vaiPara
 import br.luizfilipe.orgs.preferences.dataStore
 import br.luizfilipe.orgs.preferences.usuarioLogadoPreferences
-import br.luizfilipe.orgs.ui.activity.UsuarioBaseActivity
+import br.luizfilipe.orgs.view.activity.UsuarioBaseActivity
+import br.luizfilipe.orgs.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PerfilUserActivity : UsuarioBaseActivity() {
-    private val userDao by lazy {
-        val db = AppDataBase.getInstance(this)
-        db.userDaoRoom()
-    }
+
+    private val userViewModel: UserViewModel by viewModel()
 
     private val binding by lazy {
         ActivityPerfilUserBinding.inflate(layoutInflater)
@@ -25,10 +24,10 @@ class PerfilUserActivity : UsuarioBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         tentaCarregarUser()
         menuNavegacaoPerfilUser()
-        configuraBotaoVoltar()
-        configuraBotaoOpcoes()
+        inicializaCampos()
     }
 
     private fun tentaCarregarUser() {
@@ -42,7 +41,7 @@ class PerfilUserActivity : UsuarioBaseActivity() {
     }
 
     private suspend fun preencheCampos(usuarioId: Long) {
-        userDao.buscaPorId(usuarioId).collect { user ->
+        userViewModel.buscaPorId(usuarioId).collect { user ->
             binding.perfilNomeUser.text = user.nome
             binding.perfilEmailUser.text = user.email
         }
@@ -75,15 +74,14 @@ class PerfilUserActivity : UsuarioBaseActivity() {
         }
     }
 
-    private fun configuraBotaoVoltar() {
+    private fun inicializaCampos() {
+
         binding.perfilUserVoltar.setOnClickListener(View.OnClickListener {
             finish()
         })
-    }
 
-    private fun configuraBotaoOpcoes() {
         binding.perfilUserOpcoes.setOnClickListener(View.OnClickListener {
-
+            vaiPara(OptionsUserActivity::class.java)
         })
     }
 

@@ -1,4 +1,4 @@
-package br.luizfilipe.orgs.ui.adapter
+package br.luizfilipe.orgs.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.luizfilipe.orgs.databinding.ProdutoItemGastosBinding
 import br.luizfilipe.orgs.extensions.formataParaMoedaBrasileira
-import br.luizfilipe.orgs.model.Produto
+import br.luizfilipe.orgs.data.model.Produto
 
 class ListaProdutosGastosAdapter(
     private val context: Context

@@ -1,12 +1,11 @@
-package br.luizfilipe.orgs.ui.activity
+package br.luizfilipe.orgs.view.activity
 
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import br.luizfilipe.orgs.databinding.ActivitySplashScreenBinding
 import br.luizfilipe.orgs.extensions.vaiPara
-import br.luizfilipe.orgs.ui.activity.produto.ListaProdutosActivity
-import br.luizfilipe.orgs.ui.activity.user.LoginActivity
+import br.luizfilipe.orgs.view.activity.produto.ListaProdutosActivity
 
 class SplashScreen : Activity() {
     private val binding by lazy {
