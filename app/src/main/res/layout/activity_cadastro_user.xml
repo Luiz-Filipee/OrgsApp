@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.activity.produto.FormularioProdutoActivity">
+        tools:context=".view.activity.produto.FormularioProdutoActivity">
 
         <ImageView
             android:id="@+id/cadastro_user_close"
@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/senha"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,7 +128,7 @@
             android:text="Eu concordo com os termos de uso do aplicativo"
             app:layout_constraintTop_toBottomOf="@+id/cadastro_user_senha"
             app:layout_constraintStart_toStartOf="@+id/cadastro_user_telefone"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cadastro_user_senha"
              android:layout_marginTop="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
